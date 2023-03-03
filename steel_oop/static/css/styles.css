@@ -1,0 +1,29 @@
+
+html,
+body {
+    height: 100%;
+    font-size: 1rem;
+}
+
+.reducing { 
+    height: 10%;
+    width: auto;
+}
+
+.gradient {
+    background: rgb(0, 97, 242);
+    background: linear-gradient(
+      135deg,
+      rgba(0, 97, 242, 1) 0%,
+      rgba(105, 0, 199, 1) 100%
+    );
+  }
+  
+  .page-header {
+    margin-top: 4rem;
+    font-size: 1.25rem;
+    color: #fff;
+  }
+
+
+
