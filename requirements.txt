@@ -1,0 +1,11 @@
+pytest-django==3.8.0
+six==1.15.0
+pytest-pythonpath==0.7.3
+Django==2.2.19
+psycopg2==2.8.6
+psycopg2-binary==2.8.6
+pytz==2022.6
+sqlparse==0.4.3
+flake8==4.0.1
+isort==5.10.1
+requests==2.26.0

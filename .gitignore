@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+.vscode/
+
+/static/
+/steel_shop/products/static/
+/steel_shop/media/
+/steel_shop/static/
