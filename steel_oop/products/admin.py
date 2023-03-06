@@ -1,30 +1,28 @@
 from django.contrib import admin
-from django.contrib.admin import SimpleListFilter
 
-from . models import Category, ProductList, ProductNotList, Subcategory
+from .models import Category, ProductList, ProductNotList, Subcategory
 
 
-class CategoryListFilter(admin.SimpleListFilter):
-    title = ('Группы товаров')
-    parameter_name = 'category'
+# class SubCategoryListFilter(admin.SimpleListFilter):
+#     title = ('Категории товаров')
+#     parameter_name = 'subcategory'
     
-    def lookups(self, request, model_admin):
-        (
-            ('listovoy', ('листовой')),
-            ('90s', ('sortovoy')),
-            ('prokat_trub', ('прокат труб')),
-        )
+#     def lookups(self, request, model_admin):
+#         (
+#             ('listovoy', ('листовой')),
+#             ('sortovoy', ('сортовой')),
+#             ('prokat_trub', ('прокат труб')),
+#         )
 
-    def queryset(self, request, queryset):
-        if self.value() == 'listovoy':
-            return queryset.filter(
-               
-            )
-        if self.value() == '90s':
-            return queryset.filter(
-                birthday__gte=date(1990, 1, 1),
-                birthday__lte=date(1999, 12, 31),
-            )    
+#     def queryset(self, request, queryset):
+#         if self.value() == 'listovoy':
+#             return queryset.filter(category.slug == 'listovoy')               
+#             )
+#         if self.value() == '90s':
+#             return queryset.filter(
+#                 birthday__gte=date(1990, 1, 1),
+#                 birthday__lte=date(1999, 12, 31),
+#             )    
 
 
 @admin.register(Category)
@@ -41,7 +39,6 @@ class SubcategoryAdmin(admin.ModelAdmin):
     list_filter = ('category',)
     list_editable = ('slug',)
     
-    
 
 @admin.register(ProductNotList)
 class ProductNotListAdmin(admin.ModelAdmin):
@@ -49,7 +46,8 @@ class ProductNotListAdmin(admin.ModelAdmin):
                     'show_price_metr', 'coeff', 'base_price', 'discount',
                     )
     search_fields = ('size',)
-    list_filter = ('subcategory',)
+    list_filter = (('subcategory', admin.RelatedOnlyFieldListFilter),
+    )
     list_editable = ('base_price', 'discount',)
 
     def show_price_tonn(self, obj):
@@ -65,11 +63,12 @@ class ProductListAdmin(admin.ModelAdmin):
                     'show_price_item', 'coeff', 'base_price', 'discount',
                     )
     search_fields = ('thickness',)
-    list_filter = ('subcategory',)
+    list_filter = (('subcategory', admin.RelatedOnlyFieldListFilter),
+    )
     list_editable = ('base_price', 'discount',)
 
     def show_price_tonn(self, obj):
-        return obj.price_tonn
+        return obj.pricetonn
 
     def show_price_item(self, obj):
-        return obj.price_item
+        return obj.priceitem

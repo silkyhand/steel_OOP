@@ -1,6 +1,6 @@
-from django.db import models
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
+from django.db import models
 from django.shortcuts import reverse
 
 
@@ -68,8 +68,7 @@ class ProductNotList(models.Model):
     @property
     def price_tonn(self):
         '''Расчитать стоимость со скидкой'''
-        price_tonn = int(self.price * (100 - self.discount) / 100)
-        return price_tonn
+        return int(self.price * (100 - self.discount) / 100)
 
     @property
     def price_metr(self):
@@ -111,13 +110,12 @@ class ProductList(models.Model):
     discount = models.IntegerField('Скидка в процентах', blank=True, default=0)
 
     @property
-    def price_tonn(self):
+    def pricetonn(self):
         '''Расчитать стоимость со скидкой'''
-        price_discount = int(self.price * (100 - self.discount) / 100)
-        return price_discount
+        return int(self.price * (100 - self.discount) / 100)
 
     @property
-    def price_item(self):
+    def priceitem(self):
         "Расчитать стоимость тонны"
         price_metr = self.discount_price / self.coeff
         return round(price_metr, 1)
