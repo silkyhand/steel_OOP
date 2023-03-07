@@ -68,12 +68,12 @@ class ProductNotList(models.Model):
     @property
     def price_tonn(self):
         '''Расчитать стоимость со скидкой'''
-        return int(self.price * (100 - self.discount) / 100)
+        return int(self.base_price * (100 - self.discount) / 100)
 
     @property
     def price_metr(self):
         "Расчитать стоимость тонны"
-        price_metr = self.discount_price / self.coeff
+        price_metr = self.price_tonn / self.coeff
         return round(price_metr, 1)
 
     def __str__(self):
@@ -110,14 +110,14 @@ class ProductList(models.Model):
     discount = models.IntegerField('Скидка в процентах', blank=True, default=0)
 
     @property
-    def pricetonn(self):
+    def price_tonn(self):
         '''Расчитать стоимость со скидкой'''
-        return int(self.price * (100 - self.discount) / 100)
+        return int(self.base_price * (100 - self.discount) / 100)
 
     @property
-    def priceitem(self):
+    def price_item(self):
         "Расчитать стоимость тонны"
-        price_metr = self.discount_price / self.coeff
+        price_metr = self.price_tonn / self.coeff
         return round(price_metr, 1)
 
     def __str__(self):
