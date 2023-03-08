@@ -3,7 +3,6 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.shortcuts import reverse
 
-
 User = get_user_model()
 
 
@@ -68,7 +67,7 @@ class ProductNotList(models.Model):
     @property
     def price_tonn(self):
         '''Расчитать стоимость со скидкой'''
-        return int(self.base_price * (100 - self.discount) / 100)
+        return round(self.base_price/100) * (100 - self.discount)
 
     @property
     def price_metr(self):
@@ -112,13 +111,13 @@ class ProductList(models.Model):
     @property
     def price_tonn(self):
         '''Расчитать стоимость со скидкой'''
-        return int(self.base_price * (100 - self.discount) / 100)
+        return round(self.base_price/100) * (100 - self.discount)
 
     @property
     def price_item(self):
         "Расчитать стоимость тонны"
         price_metr = self.price_tonn / self.coeff
-        return round(price_metr, 1)
+        return round(price_metr/100)*100
 
     def __str__(self):
         return self.subcategory.name

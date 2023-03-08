@@ -74,6 +74,6 @@ class ProductListAdmin(admin.ModelAdmin):
 
     def price_item(self, obj):
         return obj.price_item
-    
+
     price_tonn.short_description = 'Цена за тонну'
     price_item.short_description = 'Цена за штуку'
