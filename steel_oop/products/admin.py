@@ -50,13 +50,13 @@ class ProductNotListAdmin(admin.ModelAdmin):
                    )
     list_editable = ('base_price', 'discount',)
 
-    def price_tonn(self, obj):
-        return obj.price_tonn
-    price_tonn.short_description = 'Цена за тонну'
+    # def price_tonn(self, obj):
+    #     return obj.price_tonn
+    # price_tonn.short_description = 'Цена за тонну'
 
-    def price_metr(self, obj):
-        return obj.price_metr
-    price_metr.short_description = 'Цена за метр'
+    # def price_metr(self, obj):
+    #     return obj.price_metr
+    # price_metr.short_description = 'Цена за метр'
 
 
 @admin.register(ProductList)
@@ -69,11 +69,11 @@ class ProductListAdmin(admin.ModelAdmin):
                    )
     list_editable = ('base_price', 'discount',)
 
-    def price_tonn(self, obj):
-        return obj.price_tonn
+    # def price_tonn(self, obj):
+    #     return obj.price_tonn
 
-    def price_item(self, obj):
-        return obj.price_item
+    # def price_item(self, obj):
+    #     return obj.price_item
 
-    price_tonn.short_description = 'Цена за тонну'
-    price_item.short_description = 'Цена за штуку'
+    # price_tonn.short_description = 'Цена за тонну'
+    # price_item.short_description = 'Цена за штуку'
