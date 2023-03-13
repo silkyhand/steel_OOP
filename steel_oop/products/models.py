@@ -70,8 +70,8 @@ class Product(models.Model):
             MinValueValidator(1)])
     price_tonn = models.IntegerField('Цена за тонну', default=0) 
     price_item = models.DecimalField(
-        'Цена за ед.(п/м или шт.)',
-        max_digits=5,
+        'Цена за ед.(п/м или шт.)', 
+        max_digits=7,
         decimal_places=1,
         default=0)
     discount = models.IntegerField('Скидка в процентах', blank=True, default=0)
@@ -86,7 +86,7 @@ class Product(models.Model):
     
     def save(self, *args, **kwargs):
         "Расчитать стоимость тонны и погонного метра и единицы товара"
-        self.price_tonn = round(((self.base_price/100) * (100 - self.discount))/100) * 100
+        self.price_tonn = round(((self.base_price/100) * (100 - self.discount)) / 100) * 100
         if self.subcategory.category.slug == 'listovoy':
             self.price_item = round(self.price_tonn / self.coeff / 100) * 100
         else:    
