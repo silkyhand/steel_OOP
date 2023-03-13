@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Category, ProductList, ProductNotList, Subcategory
+from .models import Category, Product, Productlist, ProductNotlist, Subcategory
 
 
 # class SubCategoryListFilter(admin.SimpleListFilter):
@@ -40,10 +40,10 @@ class SubcategoryAdmin(admin.ModelAdmin):
     list_editable = ('slug',)
     
 
-@admin.register(ProductNotList)
-class ProductNotListAdmin(admin.ModelAdmin):
-    list_display = ('size', 'parameter', 'length', 'price_tonn',
-                    'price_metr', 'coeff', 'base_price', 'discount',
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('size', 'parameter', 'thickness', 'length', 'area', 'price_tonn',
+                    'price_item', 'coeff', 'base_price', 'discount',
                     )
     search_fields = ('size',)
     list_filter = (('subcategory', admin.RelatedOnlyFieldListFilter),
@@ -59,7 +59,7 @@ class ProductNotListAdmin(admin.ModelAdmin):
     # price_metr.short_description = 'Цена за метр'
 
 
-@admin.register(ProductList)
+@admin.register(Productlist)
 class ProductListAdmin(admin.ModelAdmin):
     list_display = ('thickness', 'size', 'area', 'price_tonn',
                     'price_item', 'coeff', 'base_price', 'discount',
@@ -68,6 +68,37 @@ class ProductListAdmin(admin.ModelAdmin):
     list_filter = (('subcategory', admin.RelatedOnlyFieldListFilter),
                    )
     list_editable = ('base_price', 'discount',)
+
+    def price_item(self):
+        return self.price_item
+
+    price_item.short_description = 'Цена за штуку'
+
+
+@admin.register(ProductNotlist)
+class ProductNotListAdmin(admin.ModelAdmin):
+    list_display = ('size', 'parameter', 'length', 'price_tonn',
+                    'price_item', 'coeff', 'base_price', 'discount',
+                    )
+    search_fields = ('size',)
+    list_filter = (('subcategory', admin.RelatedOnlyFieldListFilter),
+                   )
+    list_editable = ('base_price', 'discount',)
+
+    def price_item(self):
+        return self.price_item
+
+    price_item.short_description = 'Цена за погонный метр'
+    
+# @admin.register(ProductList)
+# class ProductListAdmin(admin.ModelAdmin):
+#     list_display = ('thickness', 'size', 'area', 'price_tonn',
+#                     'price_item', 'coeff', 'base_price', 'discount',
+#                     )
+#     search_fields = ('thickness',)
+#     list_filter = (('subcategory', admin.RelatedOnlyFieldListFilter),
+#                    )
+#     list_editable = ('base_price', 'discount',)
 
     # def price_tonn(self, obj):
     #     return obj.price_tonn
