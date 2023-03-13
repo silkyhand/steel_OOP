@@ -53,43 +53,40 @@ class Product(models.Model):
         related_name='products_not_list',
         verbose_name='Категория товара',
     )
-    price_tonn = models.IntegerField('Цена за тонну')   
     base_price = models.IntegerField('Базовая цена')
     coeff = models.DecimalField(
         'Коэфф. пересчета',
         max_digits=7,
-        decimal_places=3,
+        decimal_places=2,
         validators=[
             MinValueValidator(1)])
     discount = models.IntegerField('Скидка в процентах', blank=True, default=0)
 
     def __str__(self):
         return self.subcategory.name
-
-    def save(self, *args, **kwargs):
-        self.price_tonn = round(self.base_price/100) * (100 - self.discount)
-        super(Product, self).save(*args, **kwargs)
-
-
+    
+   
 class ProductNotList(Product):    
     parameter = models.CharField('Параметры, марка стали', max_length=50)
-    length = models.IntegerField('Длина')    
-    price_metr =  models.DecimalField(
+    length = models.IntegerField('Длина')  
+    price_tonn = models.IntegerField('Цена за тонну', default=0)   
+    price_metr = models.DecimalField(
         'Цена за п/м',
-        max_digits=3,
+        max_digits=5,
         decimal_places=1,
         validators=[
-            MinValueValidator(1)])
-    
+            MinValueValidator(0)], default=0)
+        
     class Meta:
         ordering = ['-base_price']
         verbose_name = 'Товар не лист'
         verbose_name_plural = ' Товары не листы'
     
     def save(self, *args, **kwargs):
-        "Расчитать стоимость погонного метра"
-        self.price_metr = self.price_tonn / self.coeff
-        super(Product, self).save(*args, **kwargs)
+        "Расчитать стоимость тонны и погонного метра"
+        self.price_tonn = round(self.base_price/100) * (100 - self.discount)
+        self.price_metr = round(self.price_tonn / self.coeff, 1)
+        super(ProductNotList, self).save(*args, **kwargs)
 
 
 class ProductList(Product):
@@ -99,8 +96,9 @@ class ProductList(Product):
         max_digits=7,
         decimal_places=3,
         validators=[
-            MinValueValidator(1)]) 
-    price_item = models.IntegerField('Цена за штуку')  
+            MinValueValidator(1)])
+    price_tonn = models.IntegerField('Цена за тонну', default=0) 
+    price_item = models.IntegerField('Цена за штуку', default=0)  
     
     class Meta:
         ordering = ['-base_price']
@@ -108,6 +106,7 @@ class ProductList(Product):
         verbose_name_plural = ' Листы'
   
     def save(self, *args, **kwargs):
-        "Расчитать стоимость погонного листа"
-        self.price_item = self.price_tonn / self.coeff
-        super(Product, self).save(*args, **kwargs)
+        "Расчитать стоимость тонны и листа"
+        self.price_tonn = round(self.base_price/100) * (100 - self.discount)
+        self.price_item = round(self.price_tonn / self.coeff / 100) * 100
+        super(ProductList, self).save(*args, **kwargs)
