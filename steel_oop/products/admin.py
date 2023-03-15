@@ -42,13 +42,24 @@ class SubcategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('size', 'parameter', 'thickness', 'length', 'area', 'price_tonn',
+    list_display = ('subcategory', 'size', 'parameter', 'thickness', 'length', 'area', 'price_tonn',
                     'price_item', 'coeff', 'base_price', 'discount',
                     )
     search_fields = ('size',)
     list_filter = (('subcategory', admin.RelatedOnlyFieldListFilter),
                    )
     list_editable = ('base_price', 'discount',)
+
+    fieldsets = (
+      ('Общие данные', {
+          'fields': ('subcategory', 'size', 'parameter', 'thickness', 'length', 'area',
+                     'coeff', 'base_price', 'discount'
+                    )
+      }),
+      ('Рассчитываемы данные', {
+          'fields': ('price_tonn', 'price_item')
+      }),
+    )
 
     # def price_tonn(self, obj):
     #     return obj.price_tonn
@@ -61,7 +72,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Productlist)
 class ProductListAdmin(admin.ModelAdmin):
-    list_display = ('subcategory','thickness', 'size', 'area', 'price_tonn',
+    list_display = ('subcategory', 'thickness', 'size', 'area', 'price_tonn',
                     'price_item', 'coeff', 'base_price', 'discount',
                     )
     search_fields = ('thickness',)
@@ -72,10 +83,16 @@ class ProductListAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         return Productlist.objects.exclude(thickness__isnull=True)
 
-    def price_item(self):
-        return self.price_item
-
-    price_item.short_description = 'Цена за штуку'
+    fieldsets = (
+      ('Общие данные', {
+          'fields': ('subcategory', 'thickness', 'size', 'area',
+                     'coeff', 'base_price', 'discount'
+                    )
+      }),
+      ('Рассчитываемы данные', {
+          'fields': ('price_tonn', 'price_item')
+      }),
+    )
 
 
 @admin.register(ProductNotlist)
@@ -91,11 +108,16 @@ class ProductNotListAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         return Productlist.objects.exclude(thickness__isnull=False)
 
-    def price_item(self, obj):
-        return obj.price_item
-
-    price_item.short_description = 'Цена за погонный метр'
-    
+    fieldsets = (
+      ('Общие данные', {
+          'fields': ('subcategory', 'size','parameter','length',    
+                     'coeff', 'base_price', 'discount',
+                    )
+      }),
+      ('Рассчитываемы данные', {
+          'fields': ('price_tonn', 'price_item')
+      }),
+    )
 # @admin.register(ProductList)
 # class ProductListAdmin(admin.ModelAdmin):
 #     list_display = ('thickness', 'size', 'area', 'price_tonn',
