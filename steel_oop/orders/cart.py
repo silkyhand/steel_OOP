@@ -50,7 +50,7 @@ class Cart(object):
             del self.cart[product_id]
             self.save()   
 
-    def __iter__(self):
+    def __iter__(self, unit):
         """
         Перебор элементов в корзине и получение продуктов из базы данных.
         """
@@ -66,12 +66,30 @@ class Cart(object):
             item['price_item'] = Decimal(item['price_item'])
             item['coeff'] = Decimal(item['coeff'])
             item['length'] = Decimal(item['length'])
-            item['total_price_tonn'] = item['price_tonn'] * item['quantity']
-            if item['category'] == 'listovoy':            
-                item['total_price_item'] = item['price_tonn'] * item['quantity']
-            else:
-                try:
-                    
-
-
+            if unit == 'т':
+                item['total_price'] = item['price_tonn'] * item['quantity']
+            else:    
+                if item['category'] == 'listovoy':            
+                    item['total_price'] = item['price_item'] * item['quantity']
+                elif item['category'] != 'listovoy' and (item['quantaty'] / item['length']) != 0:
+                    raise Exception('Значение должно быть кратным длине')
+                else:
+                    item['total_price'] = item['price_item'] * item['quantity']
             yield item        
+
+    def __len__(self):
+        """
+        Подсчет всех товаров в корзине.
+        """
+        return sum(item['quantity'] for item in self.cart.values())
+
+    def get_total_price(self):
+        """
+        Подсчет стоимости товаров в корзине.
+        """
+        return sum(item['total_price'] for item in self.cart.values())
+    
+    def clear(self):
+        # удаление корзины из сессии
+        del self.session[settings.CART_SESSION_ID]
+        self.session.modified = True
