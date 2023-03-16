@@ -1,10 +1,21 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}
   Steelshop
 {% endblock %} 
 {% block content %}
   <div class="container py-5">     
     <h1>Пробная главная страница</h1>
+      <h2>Товары</h2>
+        <ul>
+          {% for product in object_list %}
+              <li>
+                <h2>{{ product.subcategory.name }}</h2>
+              </li>
+              <li>{{ product.price_tonn }} т </li>
+              <li>{{ product.price_item }} м </li>
+          {% endfor %}
+      </ul>
     {% comment %} {% for post in page_obj %}
       <article>
         <ul>
