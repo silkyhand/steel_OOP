@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% block title %}
-  Steelshop
+  Конструктор стали
 {% endblock %} 
 {% block content %}
 <div class="container py-5">
-  <p class="price">${{ product.price }}</p>
-  <form action="{% url "cart:cart_add" product.id %}" method="post">
+  <p class="price">${{ product.price_tonn }}</p>
+  <form action="{% url 'orders:cart_add' product_id=product.id %}" method="post">
       {{ cart_product_form }}
       {% csrf_token %}
       <input type="submit" value="Add to cart">
