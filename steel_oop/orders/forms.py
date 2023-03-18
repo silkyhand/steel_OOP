@@ -11,3 +11,4 @@ class CartAddProductForm(forms.Form):
     quantity = forms.TypedChoiceField(choices=PRODUCT_QUANTITY_CHOICES, coerce=int)
     update = forms.BooleanField(required=False, initial=False, widget=forms.HiddenInput)
     unit = forms.ChoiceField(choices=UNIT_CHOICES)
+ 

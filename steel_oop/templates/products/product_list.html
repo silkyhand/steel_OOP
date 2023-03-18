@@ -1,21 +1,18 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-  Steelshop
+  ТОВАРЫ  
 {% endblock %} 
 {% block content %}
   <div class="container py-5">     
-    <h1>Пробная главная страница</h1>
-      <h2>Товары</h2>
-        <ul>
-          {% for product in object_list %}
-              <li>
-                <h2>{{ product.subcategory.name }}</h2>
-              </li>
-              <li>{{ product.price_tonn }} т </li>
-              <li>{{ product.price_item }} м </li>
-          {% endfor %}
-      </ul>
+        {% for product in object_list %}
+        <h2>Категория товара{{ product.subcategory.name }}</h2>        
+        <h3>Цена за метр{{ product.price_item }} <a href="{% url 'products:product_detail' product_id=product.id %}">Товар</a></h3>
+        <h3>Цена за тонну{{ product.price_tonn }}</h3>
+        {% endfor %}        
+    </div>    
+{% endblock %}
+
     {% comment %} {% for post in page_obj %}
       <article>
         <ul>
@@ -38,6 +35,4 @@
         {% endif %}
     {% endfor %}   
     {% include 'posts/includes/paginator.html' %}   {% endcomment %}
-  </div>  
-{% endblock %} 
-    
+  
