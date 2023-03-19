@@ -11,21 +11,9 @@ class ProductListView(ListView):
 #     template = 'products/index.html'
 #     return render(request, template)
 
-<<<<<<< HEAD
-
-def product_detail(request, id):
-    product = get_object_or_404(Product,
-                                id=id,)
-                                # slug=slug,
-                                # available=True)
-=======
-class ProductListView(ListView):
-    model = Product
-
 
 def product_detail(request, product_id):
     product = get_object_or_404(Product, pk=product_id)                                
->>>>>>> 39229bdd952abfe75b981b1737b92b08fac99895
     cart_product_form = CartAddProductForm()
     return render(request, 'products/product_detail.html', {'product': product,
                                                             'cart_product_form': cart_product_form})

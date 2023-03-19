@@ -17,22 +17,24 @@ class Cart(object):
             cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
 
-    def add(self, product, quantity=1, update_quantity=False):
+    def add(self, product, unit, quantity=1, update_quantity=False):
         """
         Добавить продукт в корзину или обновить его количество.
         """
-        product_id = str(product.id)
+        product_id = str(product.id)        
         if product_id not in self.cart:
             self.cart[product_id] = {'quantity': 0,
+                                     'unit': unit,
                                      'price_tonn': str(product.price_tonn),
                                      'price_item': str(product.price_item),
-                                     'coeff': str(product.coeff),
                                      'length': str(product.length),
+                                     'coeff': str(product.coeff),                                     
                                      }
         if update_quantity:
             self.cart[product_id]['quantity'] = quantity
         else:
             self.cart[product_id]['quantity'] += quantity
+        print(self.cart[product_id])    
         self.save()
 
     def save(self):
@@ -50,23 +52,26 @@ class Cart(object):
             del self.cart[product_id]
             self.save()   
 
-    def __iter__(self, unit):
+    def __iter__(self):
         """
         Перебор элементов в корзине и получение продуктов из базы данных.
         """
         product_ids = self.cart.keys()
+        print(product_ids)
         # получение объектов product и добавление их в корзину
         products = Product.objects.filter(id__in=product_ids)
+        print(list(products.values()))
         for product in products:
             self.cart[str(product.id)]['product'] = product
             self.cart[str(product.id)]['category'] = product.subcategory.category.slug 
 
         for item in self.cart.values():
+            print(item['length'])
             item['price_tonn'] = Decimal(item['price_tonn'])
             item['price_item'] = Decimal(item['price_item'])
+            item['length'] = int(item['length'])
             item['coeff'] = Decimal(item['coeff'])
-            item['length'] = Decimal(item['length'])
-            if unit == 'т':
+            if item['unit'] == 't':
                 item['total_price'] = item['price_tonn'] * item['quantity']
             else:    
                 if item['category'] == 'listovoy':            

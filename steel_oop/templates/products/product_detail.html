@@ -4,11 +4,13 @@
 {% endblock %} 
 {% block content %}
 <div class="container py-5">
-  <p class="price">${{ product.price_tonn }}</p>
+  <h3><p>{{ product.subcategory.name }}</p></h3>
+  <p class="price">{{ product.length }} <span> M </span></p>
+  <p class="price">{{ product.price_tonn }} <span>РУБ.</span></p>
   <form action="{% url 'orders:cart_add' product_id=product.id %}" method="post">
       {{ cart_product_form }}
       {% csrf_token %}
-      <input type="submit" value="Add to cart">
+      <input type="submit" value="Добавить в машину">
   </form>
 </div>  
 {% endblock %} 

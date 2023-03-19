@@ -49,7 +49,7 @@ class Product(models.Model):
     size = models.CharField('Размер', max_length=50)
     parameter = models.CharField('Параметры, марка стали', max_length=50, null=True, blank=True)
     thickness = models.CharField('Толщина', max_length=50, null=True, blank=True)
-    length = models.IntegerField('Длина', null=True, blank=True)
+    length = models.IntegerField('Длина', default=1)
     area = models.DecimalField(
         'Квадратные метры',
         max_digits=7,

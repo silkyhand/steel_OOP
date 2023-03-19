@@ -14,7 +14,7 @@ def cart_add(request, product_id):
         cd = form.cleaned_data
         cart.add(product=product,
                  quantity=cd['quantity'],
-                 update_quantity=cd['update'],
+                 update_quantity=cd['update'],                 
                  unit=cd['unit'],
                  )
     return redirect('orders:cart_detail')

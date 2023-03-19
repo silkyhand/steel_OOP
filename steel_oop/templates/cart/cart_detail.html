@@ -4,7 +4,7 @@
     Корзина
 {% endblock %}
 {% block content %}
-    <h1>Your shopping cart</h1>
+    <h1>Ваша корзина</h1>
     <table class="cart">
         <thead>
         <tr>
@@ -30,7 +30,7 @@
                        <td class="num">${{ item.price_item }}</td>
                        <td class="num">${{ item.total_price }}</td>                      
                     {% endif %}
-                    <td><a href="{% url "orders:cart_remove" product.id%}">Удалить</a></td>
+                    <td><a href="{% url "orders:cart_remove" product.id %}">Удалить</a></td>
                 </tr>
             {% endwith %}
         {% endfor %}
@@ -41,8 +41,5 @@
         </tr>
         </tbody>
     </table>
-    <!-- <p class="text-right">
-        <a href="{% url "shop:product_list" %}" class="button light">Continue shopping</a>
-        <a href="#" class="button">Checkout</a>
-    </p> -->
+    
 {% endblock %}
