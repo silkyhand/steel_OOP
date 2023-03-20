@@ -21,7 +21,8 @@ class Cart(object):
         """
         Добавить продукт в корзину или обновить его количество.
         """
-        product_id = str(product.id)        
+        product_id = str(product.id)
+        self.cart.clear()
         if product_id not in self.cart:
             self.cart[product_id] = {'quantity': 0,
                                      'unit': unit,
@@ -57,7 +58,6 @@ class Cart(object):
         Перебор элементов в корзине и получение продуктов из базы данных.
         """
         product_ids = self.cart.keys()
-        print(product_ids)
         # получение объектов product и добавление их в корзину
         products = Product.objects.filter(id__in=product_ids)
         print(list(products.values()))
@@ -66,20 +66,24 @@ class Cart(object):
             self.cart[str(product.id)]['category'] = product.subcategory.category.slug 
 
         for item in self.cart.values():
-            print(item['length'])
             item['price_tonn'] = Decimal(item['price_tonn'])
             item['price_item'] = Decimal(item['price_item'])
             item['length'] = int(item['length'])
             item['coeff'] = Decimal(item['coeff'])
             if item['unit'] == 't':
                 item['total_price'] = item['price_tonn'] * item['quantity']
-            else:    
-                if item['category'] == 'listovoy':            
-                    item['total_price'] = item['price_item'] * item['quantity']
-                elif item['category'] != 'listovoy' and (item['quantaty'] / item['length']) != 0:
-                    raise Exception('Значение должно быть кратным длине')
-                else:
-                    item['total_price'] = item['price_item'] * item['quantity']
+            else:
+                # if item['category'] == 'listovoy':            
+                #     item['total_price'] = item['price_item'] * item['quantity']
+                # elif item['category'] != 'listovoy' and (item['quantaty'] % item['length']) != 0:
+                #     raise ValueError('Значение должно быть кратным длине')
+                # else:
+                #     item['total_price'] = item['price_item'] * item['quantity']
+                # while True:
+                #     if (item['quantity'] % item['length']) != 0:
+                #         raise ValueError('Значение должно быть кратным длине') 
+                #     else:   
+                item['total_price'] = item['price_item'] * item['quantity']                
             yield item        
 
     def __len__(self):

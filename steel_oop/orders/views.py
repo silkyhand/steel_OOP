@@ -17,7 +17,8 @@ def cart_add(request, product_id):
                  update_quantity=cd['update'],                 
                  unit=cd['unit'],
                  )
-    return redirect('orders:cart_detail')
+        return redirect('orders:cart_detail')
+    return render(request, 'orders:cart_add', {'product_id': product_id})
 
 
 def cart_remove(request, product_id):

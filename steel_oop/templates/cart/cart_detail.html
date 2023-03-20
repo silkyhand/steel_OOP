@@ -23,12 +23,12 @@
                     <td>{{ item.quantity }}</td>
                     <td>{{ item.unit }}</td>
                     {% if item.unit == "t" %}
-                       <td class="num">${{ item.price_tonn }}</td>
-                       <td class="num">${{ item.total_price }}</td>                      
+                       <td class="num">{{ item.price_tonn }}руб.</td>
+                       <td class="num">{{ item.total_price }}руб.</td>                      
                     {% endif %}
                     {% if item.unit == "m" %}
-                       <td class="num">${{ item.price_item }}</td>
-                       <td class="num">${{ item.total_price }}</td>                      
+                       <td class="num">{{ item.price_item }}руб.</td>
+                       <td class="num">{{ item.total_price }}руб.</td>                      
                     {% endif %}
                     <td><a href="{% url "orders:cart_remove" product.id %}">Удалить</a></td>
                 </tr>
@@ -37,7 +37,7 @@
         <tr class="total">
             <td>ИТОГО</td>
             <td colspan="4"></td>
-            <td class="num">${{ cart.get_total_price }}</td>
+            <td class="num">{{ cart.get_total_price }}руб.</td>
         </tr>
         </tbody>
     </table>
