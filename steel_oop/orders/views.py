@@ -9,14 +9,15 @@ from .forms import CartAddProductForm
 def cart_add(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
-    form = CartAddProductForm(request.POST)
+    length = product.length
+    form = CartAddProductForm(length, request.POST)
     if form.is_valid():
         cd = form.cleaned_data
         cart.add(product=product,
                  quantity=cd['quantity'],
                  update_quantity=cd['update'],                 
                  unit=cd['unit'],
-                 )
+                )
         return redirect('orders:cart_detail')
     return render(request, 'orders:cart_add', {'product_id': product_id})
 

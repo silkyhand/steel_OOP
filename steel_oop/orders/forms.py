@@ -7,22 +7,23 @@ UNIT_CHOICES = (
 )
 
 
-class CartAddProductForm(forms.ModelForm):
+class CartAddProductForm(forms.Form):
     quantity = forms.IntegerField() # TypedChoiceField(choices=PRODUCT_QUANTITY_CHOICES, coerce=int)
     update = forms.BooleanField(required=False, initial=False, widget=forms.HiddenInput)
     unit = forms.ChoiceField(choices=UNIT_CHOICES)
 
+    def __init__(self, length, *args, **kwargs):
+        self.length = kwargs.pop('length')
+        super(CartAddProductForm, self).__init__(*args, **kwargs)
+
     def clean_quantity(self):
         quantity = int(self.cleaned_data['quantity'])
-        length = int(self.cleaned_data['length'])
+        length = int(self.length)
         unit = self.cleaned_data.get('unit')
 
         if unit == 'm' and (quantity % length != 0):
             raise forms.ValidationError('Введите значение кратное длине')
         return quantity
 
-    class Meta:        
-        model = Product        
-        fields = ('length',) 
-
+    
  
