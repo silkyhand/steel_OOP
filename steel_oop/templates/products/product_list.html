@@ -4,7 +4,10 @@
   ТОВАРЫ  
 {% endblock %} 
 {% block content %}
-  <div class="container py-5">     
+  <div class="container py-5">
+    <table class="table table-striped table-hover"> 
+      
+    </table>  
         {% for product in object_list %}
         <h2>Категория товара{{ product.subcategory.name }}</h2>        
         <h3>Цена за метр{{ product.price_item }} <a href="{% url 'products:product_detail' product_id=product.id %}">Товар</a></h3>
