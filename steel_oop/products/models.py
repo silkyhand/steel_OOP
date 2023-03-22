@@ -58,7 +58,7 @@ class Product(models.Model):
     subcategory = models.ForeignKey(
         Subcategory,
         on_delete=models.CASCADE,
-        related_name='products_not_list',
+        related_name='products',
         verbose_name='Категория товара',
     )
     base_price = models.IntegerField('Базовая цена', default=0)
