@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+  Конструктор стали 
+{% endblock %} 
+{% block content %}
+<div class="container py-5">
+  <div class="row">
+   {% for cat in category %}          
+    <div class="col-sm-6">
+     <div class="card">    
+       <div class="card-body">
+        <h5 class="card-title">{{ cat.name_cat }}</h5>               
+         <ul class="list-group list-group-flush">
+          {% for sub in cat.subcategories.all %}
+          <li class="list-group-item"><a href="{% url 'products:subcategory_products' sub.slug %}" class="card-link">{{sub.name}}</a></li>          
+          {% endfor %}         
+        </ul>         
+       </div>
+      </div>
+    </div>
+    {% endfor %}       
+  </div>   
+</div>
+{% endblock %}

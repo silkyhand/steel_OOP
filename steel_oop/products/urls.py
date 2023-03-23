@@ -6,8 +6,8 @@ from . import views
 app_name = 'products'
 
 urlpatterns = [
+    path('', views.index, name='index'),
     path('subcategory/<slug:slug>/', views.subcategory_products, name='subcategory_products'),
-    # path('', views.ProductListView.as_view(), name='index'),
     path('products/<int:product_id>/', views.product_detail, name='product_detail'),
    ]    
 # path('category/<cat_slug:slug>/<subcat_slug:slug>/',
