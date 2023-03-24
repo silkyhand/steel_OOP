@@ -22,8 +22,12 @@ def subcategory_products(request, slug):
         'subcategory': subcategory,
         'products_list': products_list,
     }
+    if subcategory.category.slug == "listovoy":
+        template = 'products/list_products_list.html'
+    else:
+        template = 'products/list_products_not_list.html'   
 
-    return render(request, 'products/subcategory_products.html', context)
+    return render(request, template, context)
 
 
 def product_detail(request, product_id):

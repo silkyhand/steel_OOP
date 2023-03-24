@@ -20,20 +20,26 @@
           <thead>
             <tr>
                 <th>Товар</th>
+                <th>Толщина</th>
                 <th>Цена за тонну</th>
-                <th>Цена за метр</th>
-                <th>Длина</th>
-                <th>Скидка</th>
+                <th>Цена за лист</th>
+                <th>Листов</th>
+                <th>Вес</th>
+                <th>Купить</th>                                
             </tr>
             </thead>
             <tbody>
             {% for product in products_list %}
             <tr>
               <td>{{ product.subcategory.name }}</td>
+              <td>{{ product.thickness }}</td>
               <td>{{ product.price_tonn }}</td>
               <td>{{ product.price_metr }}</td>
-              <td>{{ product.length }}</td>
-              <td>{{ product.discount }}</td>             
+              <form>              
+               <td><input type="number" min="0" step ="1" class="form-control" id="quantity" aria-label="quantity"></td>  
+               <td><input type="number" min="0"  class="form-control" id="quantity" aria-label="quantity"></td>
+               <td><button class="btn btn-success btn-buy" type="button" id="button-buy">В машину</button></td>  
+              </form>      
             </tr>
            {% endfor %}            
             </tbody>
