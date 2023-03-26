@@ -1,5 +1,5 @@
 {% load static %} 
-<nav class="navbar navbar-expand-lg navbar-light bg-light data-bs-theme="dark"">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" data-bs-theme="dark">
   <div class="container-fluid">    
     <a class="navbar-brand" href="{% url 'products:index' %}">
       <img src="{% static 'img/shopee-logo.png' %}" width="45" height="45" class="d-inline-block align-top" alt="">
@@ -13,8 +13,16 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'users:login' %}">Войти</a>
         </li>
-      <ul>      
-    </div>      
+      </ul> 
+    </div>
   </div>
-</nav>   
+</nav> 
+
+<nav class="navbar navbar-expand-lg btn-car  pull-right">
+  <div class="nav-item ">
+    <button class="btn btn-success btn-buy" type="button" id="button-buy">
+    <a class="nav-link" href="{% url 'orders:cart_detail' %}">Машина</a>
+    </button>
+  </div>             
+</nav>    
 

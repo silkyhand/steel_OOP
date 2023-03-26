@@ -6,13 +6,16 @@
 {% block content %}
   <div class="container py-5">
     <div class="row">
-      <div class="col-md-3">         
-        <ul class="list-group">
-          {% for subcategory in subcategories_list %}
-          <a href="#" class="list-group-item list-group-item-action active">
+      <div class="col-md-3">                
+        <ul class="list-group"> 
+          <h5><u>Категории товаров</u><h5>          
+          {% for subcategory in subcategories_list %}          
+          <a href="{% url 'products:subcategory_products' subcategory.slug %}" class="list-group-item list-group-item-action active">
             {{ subcategory.name }}
           </a>
+              
           {% endfor %}
+      </ul>  
       </div>
       <div class="col-sm-12 col-md-9">
         <h1>{{ product.subcategory.name }}</h1>
@@ -22,7 +25,7 @@
                 <th>Товар</th>
                 <th>Длина</th>
                 <th>Цена за тонну</th>
-                <th>Цена за лист</th>
+                <th>Цена за метр</th>
                 <th>Метраж</th>
                 <th>Вес</th>
                 <th>Купить</th>                                
@@ -37,7 +40,7 @@
               </td>
               <td>{{ product.length }}</td>
               <td>{{ product.price_tonn }}</td>
-              <td>{{ product.price_metr }}</td>
+              <td>{{ product.price_item }}</td>
               <form>              
                <td><input type="number" min="0" step ="1" class="form-control" id="quantity" aria-label="quantity"></td>  
                <td><input type="number" min="0"  class="form-control" id="quantity" aria-label="quantity"></td>
