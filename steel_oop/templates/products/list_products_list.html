@@ -31,14 +31,22 @@
             <tbody>
             {% for product in products_list %}
             <tr>
-              <td>{{ product.subcategory.name }}</td>
+              <td class="text-center block-3">
+                <a href="{% url 'products:product_detail' product.id %}">
+                {{ product.subcategory.name }}
+                <small class="length-info">{{product.thickness}}</small>
+                </a>
+              </td>
               <td>{{ product.thickness }}</td>
               <td>{{ product.price_tonn }}</td>
               <td>{{ product.price_item }}</td>
               <form id="form_buying_product">              
                <td><input type="number" min="0" step ="1" class="form-control" id="quantity" aria-label="quantity"></td>  
                <td><input type="number" min="0"  class="form-control" id="quantity" aria-label="quantity"></td>
-               <td><button class="btn btn-success btn-buy" type="submit" id="button-buy">В машину</button></td>  
+               <td><a href="{% url 'orders:cart_add' product.id %}">
+                   <button class="btn btn-success btn-buy" type="submit" id="button-buy">В машину</button>
+                   </a>
+              </td>  
               </form>      
             </tr>
            {% endfor %}            
