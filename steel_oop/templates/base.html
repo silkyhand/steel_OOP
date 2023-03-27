@@ -19,10 +19,10 @@
     </title>
   </head>
   <body>
-    <nav class="navbar navbar-dark " style="background-color: #5a98c5;">
+    <nav class="navbar   fixed-top navbar-shop ">
       {% include 'includes/nav.html' %} 
     </nav>   
-    <header class="page-header gradient">      
+    <header class="header gradient">      
       {% include 'includes/header.html' %}
     </header>
     <main>
@@ -30,6 +30,8 @@
       {% endblock %} 
     </main> 
     {% include 'includes/footer.html' %} 
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>    
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>        
   </body> 
 </html>

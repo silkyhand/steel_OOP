@@ -19,14 +19,15 @@ body {
   );
 }
 
-.page-header {
-  margin-top: 0rem;
-  margin-bottom: 2rem;
-  font-size: 1.25rem;
-  color: #fff;
-  height: 80%;
-  width: 100%;
-}
+.header{
+  background-image: url('../img/Steel.jpg');
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  height: 70%;
+  padding-top: 5rem;
+ }
+
 
 .table { 
   width: 100%;
@@ -49,3 +50,8 @@ body {
 .btn-car {
   margin-right: 2rem;
 }
+
+.navbar-shop {
+  background: #4ec67f;
+}  
+
