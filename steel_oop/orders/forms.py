@@ -25,7 +25,3 @@ class CartAddProductForm(forms.Form):
 
         if unit == 'm' and (quantity % length != 0):
             raise forms.ValidationError('Введите значение кратное длине')
-        
-
-    
- 

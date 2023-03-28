@@ -21,7 +21,7 @@
             <tr>
                 <th>Товар</th>
                 <th>Толщина</th>
-                <th>Цена за тонну</th>
+                <th>Цена за тонну</th> 
                 <th>Цена за лист</th>
                 <th>Листов</th>
                 <th>Вес</th>
@@ -39,14 +39,17 @@
               </td>
               <td>{{ product.thickness }}</td>
               <td>{{ product.price_tonn }}</td>
-              <td>{{ product.price_item }}</td>
+              <td>{{ product.price_item|floatformat:0 }}</td>
               <form id="form_buying_product">              
                <td><input type="number" min="0" step ="1" class="form-control" id="quantity" aria-label="quantity"></td>  
-               <td><input type="number" min="0"  class="form-control" id="quantity" aria-label="quantity"></td>
+               <td><input type="number" min="0"  class="form-control" id="weigth" aria-label="weigth"></td>
                <td><a href="{% url 'orders:cart_add' product.id %}">
-                   <button class="btn btn-success btn-buy" type="submit" id="button-buy">В машину</button>
-                   </a>
-              </td>  
+                <button class="btn btn-success btn-buy" type="submit" id="submit_btn"
+                        data-product_id = "{{product.id}}"
+                        data-name = "{{product.subcategory.name}}"
+                        data-price = "{{product.price_item}}"
+                >В машину</button>
+                </a> 
               </form>      
             </tr>
            {% endfor %}            
