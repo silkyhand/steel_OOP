@@ -43,7 +43,7 @@
               <td>{{ product.price_tonn }}</td>
               <td>{{ product.price_item|floatformat:0 }}</td>
               <form id="form_buying_product" action="{% url 'orders:cart_adding' %}" method="post">
-                {% csrf_token %}                             
+                {% csrf_token %}                            
                <td><input type="number" min="0" step ="1" class="form-control" id="quantity" aria-label="quantity"></td>  
                <td><input type="number" min="0"  class="form-control" id="weigth" aria-label="weigth"></td>
                <td><a href="{% url 'orders:cart_add' product.id %}">

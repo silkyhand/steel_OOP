@@ -1,7 +1,12 @@
-# from django.contrib import admin
+from django.contrib import admin
 
-# from .models import Order, ProductInOrder, Status
+from .models import ProductInCart
 
+
+@admin.register(ProductInCart)
+class ProductInCartAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in ProductInCart._meta.fields]
+    
 
 # class ProductInOrderInline(admin.TabularInline):
 #     model = ProductInOrder

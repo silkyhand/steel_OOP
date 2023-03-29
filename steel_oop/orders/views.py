@@ -4,6 +4,7 @@ from django.views.decorators.http import require_POST
 from products.models import Product
 from .cart import Cart
 from .forms import CartAddProductForm
+from .models import ProductInCart
 
 
 @require_POST
@@ -42,5 +43,4 @@ def cart_adding(request):
     session_key = request.session.session_key
     data = request.POST
     print (request.POST)
-    print (data)
     return JsonResponse(return_dict)

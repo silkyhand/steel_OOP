@@ -1,6 +1,44 @@
-# from django.db import models
-# from products.models import Product
-# from users.models import User
+from django.contrib.auth import get_user_model
+from django.db import models
+from products.models import Product
+
+User = get_user_model()
+
+
+class ProductInCart(models.Model):
+    session_key = models.CharField(max_length=128)
+    product = models.ForeignKey(
+        Product,
+        verbose_name='Товар в корзине',
+        on_delete=models.CASCADE,
+        related_name='productsincart')
+    nmb = models.IntegerField(default=1)
+    price_item = models.DecimalField(
+        'Цена за ед.(п/м или шт.)',
+        max_digits=7,
+        decimal_places=1,
+        default=0)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    is_active = models.BooleanField(default=True)
+    created = models.DateTimeField(auto_now_add=True, auto_now=False)
+    updated = models.DateTimeField(auto_now_add=False, auto_now=True)
+
+    def __str__(self):
+        if self.product.thickness:
+            return f'{self.product.subcategory.name}\n {self.product.thickness}'
+       
+        return f'{self.product.subcategory.name}\n {self.product.size}'
+
+    class Meta:
+        verbose_name = 'Товар в корзине'
+        verbose_name_plural = 'Товары в корзине'
+
+    def save(self, *args, **kwargs):
+        price_item = self.product.price_item
+        self.price_item = price_item
+        self.total_price = int(self.nmb) * price_item
+
+        super(ProductInCart, self).save(*args, **kwargs)
 
 
 # class Status(models.Model):
@@ -51,4 +89,7 @@
 
 #     class Meta:
 #         verbose_name = 'Товар в заказе'
-#         verbose_name_plural = 'Товары в заказе'        
+#         verbose_name_plural = 'Товары в заказе'   
+
+
+
