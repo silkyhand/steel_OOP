@@ -9,7 +9,7 @@
       <div class="col-md-3">
         <ul class="list-group">          
           {% for subcategory in subcategories_list %}
-          <a href="{% url 'products:subcategory_products' subcategory.slug %}" class="list-group-item list-group-item-action active">
+          <a href="{% url 'products:products_list' subcategory.slug %}" class="list-group-item list-group-item-action active">
             {{ subcategory.name }}
           </a>
           {% endfor %}
@@ -40,8 +40,9 @@
               <td>{{ product.thickness }}</td>
               <td>{{ product.price_tonn }}</td>
               <td>{{ product.price_item|floatformat:0 }}</td>
-              <form id="form_buying_product">              
-               <td><input type="number" min="0" step ="1" class="form-control" id="quantity" aria-label="quantity"></td>  
+              <form id="form_buying_product" action="{% url 'orders:cart_adding' %}" method="post">
+                {% csrf_token %}              
+               <td><input type="number" min="0" step ="1" class="form-control"  id="quantity" aria-label="quantity"></td>  
                <td><input type="number" min="0"  class="form-control" id="weigth" aria-label="weigth"></td>
                <td><a href="{% url 'orders:cart_add' product.id %}">
                 <button class="btn btn-success btn-buy" type="submit" id="submit_btn"

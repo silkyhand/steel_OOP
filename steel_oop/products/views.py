@@ -13,10 +13,14 @@ def index(request):
     return render(request, 'products/index.html', context)
 
 
-def subcategory_products(request, slug):
+def products_list(request, slug):
     subcategories_list = Subcategory.objects.all()
     subcategory = get_object_or_404(Subcategory, slug=slug)
     products_list = subcategory.products.all()
+    session_key = request.session.session_key
+    if not session_key:
+        request.session.cycle_key()
+    
     context = {
         'subcategories_list':  subcategories_list,
         'subcategory': subcategory,
