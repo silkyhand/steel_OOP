@@ -17,11 +17,14 @@
   </div>
 </nav> 
 
-<nav class="navbar navbar-expand-lg btn-car  pull-right">
-  <div class="nav-item ">
+<nav class="navbar navbar-expand-lg btn-car pull-right">
+  <div class="nav-item navbar-right">    
     <button class="btn btn-success btn-buy" type="button" id="button-buy">
-    <a class="nav-link" href="{% url 'orders:cart_detail' %}">Машина</a>
-    </button>
+    <a class="nav-link"  href="{% url 'orders:cart_detail' %}">
+      Машина
+      <span class="badge bg-primary rounded-pill" id="products_total_nmb"></span> 
+    </a>          
+    </button>      
   </div>             
 </nav>    
 

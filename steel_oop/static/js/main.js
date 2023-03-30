@@ -3,7 +3,6 @@ var form = $('#form_buying_product');
 console.log(form);
 form.on('submit', function(e){
     e.preventDefault();
-    console.log('123');
     var nmb = $("#quantity").val();
     var weigth = $("#weigth").val();
     console.log(nmb);
@@ -31,6 +30,10 @@ form.on('submit', function(e){
             cache: true,
             success: function (data) {
                 console.log("OK");
+                console.log(data.products_total_nmb);
+                if (products_total_nmb) {
+                    $("#products_total_nmb").text(data.products_total_nmb);  
+                }
             },
             error: function(){
                 console.log("error")
