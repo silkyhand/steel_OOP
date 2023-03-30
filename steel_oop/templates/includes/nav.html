@@ -21,8 +21,12 @@
   <div class="nav-item navbar-right">    
     <button class="btn btn-success btn-buy" type="button" id="button-buy">
     <a class="nav-link"  href="{% url 'orders:cart_detail' %}">
-      Машина
-      <span class="badge bg-primary rounded-pill" id="products_total_nmb"></span> 
+      Машина      
+      <span class="badge bg-primary rounded-pill" id="products_total_nmb">
+        {% if products_total_nmb %}
+          {{ products_total_nmb }}     
+        {% endif %}
+      </span> 
     </a>          
     </button>      
   </div>             

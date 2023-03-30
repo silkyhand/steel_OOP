@@ -51,7 +51,5 @@ def cart_adding(request):
         nmb=nmb,
     )
     products_total_nmb = ProductInCart.objects.filter(session_key=session_key, is_active=True).count()
-    return_dict["products_total_nmb"] = products_total_nmb
-
-    
+    return_dict["products_total_nmb"] = products_total_nmb    
     return JsonResponse(return_dict)
