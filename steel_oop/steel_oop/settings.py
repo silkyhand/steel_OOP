@@ -51,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_session_timeout.middleware.SessionTimeoutMiddleware',
 ]
 
 ROOT_URLCONF = 'steel_oop.urls'
@@ -134,3 +135,5 @@ LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'products:index'
 LOGOUT_REDIRECT_URL = 'products:index'
 CART_SESSION_ID = 'cart'
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True

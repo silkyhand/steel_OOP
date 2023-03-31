@@ -7,49 +7,77 @@ from .forms import CartAddProductForm
 from .models import ProductInCart
 
 
-@require_POST
-def cart_add(request, product_id):
-    cart = Cart(request)
-    product = get_object_or_404(Product, id=product_id)
-    length = product.length
-    form = CartAddProductForm(request.POST, length=length)
-    if form.is_valid():
-        cd = form.cleaned_data
-        cart.add(product=product,
-                 quantity=cd['quantity'],
-                 update_quantity=cd['update'],                 
-                 unit=cd['unit'],
-                )
-    return redirect('orders:cart_detail')
+# @require_POST
+# def cart_add(request, product_id):
+#     cart = Cart(request)
+#     product = get_object_or_404(Product, id=product_id)
+#     length = product.length
+#     form = CartAddProductForm(request.POST, length=length)
+#     if form.is_valid():
+#         cd = form.cleaned_data
+#         cart.add(product=product,
+#                  quantity=cd['quantity'],
+#                  update_quantity=cd['update'],                 
+#                  unit=cd['unit'],
+#                 )
+#     return redirect('orders:cart_detail')
     # else:
     #     print(form.errors)
     # return render(request, 'orders:cart_add', {'product_id': product_id})
 
 
-def cart_remove(request, product_id):
-    cart = Cart(request)
-    product = get_object_or_404(Product, id=product_id)
-    cart.remove(product)
-    return redirect('orders:cart_detail')
+# def cart_remove(request, product_id):
+#     cart = Cart(request)
+#     product = get_object_or_404(Product, id=product_id)
+#     cart.remove(product)
+#     return redirect('orders:cart_detail')
 
 
-def cart_detail(request):
-    cart = Cart(request)
-    return render(request, 'cart/cart_detail.html', {'cart': cart})
+# def cart_detail(request):
+#     cart = Cart(request)
+#     return render(request, 'cart/cart_detail.html', {'cart': cart})
 
 
 def cart_adding(request):
     return_dict = dict()
-    session_key = request.session.session_key
+    session_key = request.session.session_key   
     data = request.POST
     product_id = data.get("product_id")
     nmb = data.get("nmb")
    
-    new_product = ProductInCart.objects.create(
+    new_product, created = ProductInCart.objects.get_or_create(
         session_key=session_key,
         product_id=product_id,
-        nmb=nmb,
+        defaults={"nmb": nmb}        
     )
-    products_total_nmb = ProductInCart.objects.filter(session_key=session_key, is_active=True).count()
-    return_dict["products_total_nmb"] = products_total_nmb    
+
+    if not created:        
+        new_product.nmb += int(nmb)
+        new_product.save(force_update=True)
+         
+    products_in_cart = ProductInCart.objects.filter(session_key=session_key, is_active=True)
+    products_total_nmb = products_in_cart.count()
+    return_dict["products_total_nmb"] = products_total_nmb
+
+    return_dict["products"] = list()
+
+    for item in products_in_cart:
+        product_dict = dict()
+        product_dict["id"] = item.id
+        product_dict["name"] = item.product.subcategory.name
+        product_dict["price_item"] = item.price_item
+        product_dict["nmb"] = item.nmb
+        return_dict["products"].append(product_dict)
+
     return JsonResponse(return_dict)
+
+
+def cart_order(request):
+    session_key = request.session.session_key
+    products_in_cart = ProductInCart.objects.filter(session_key=session_key, is_active=True)
+    total_cart_price = 0
+    for item in products_in_cart:
+        total_cart_price += item.total_price        
+    template = "cart/cart_order.html"
+    context = {"total_cart_price": total_cart_price}   
+    return render(request, template, context)

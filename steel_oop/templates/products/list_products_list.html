@@ -4,7 +4,7 @@
   ТОВАРЫ  
 {% endblock %} 
 {% block content %}
-  <div class="container py-5">
+  <div class="container" style="padding-top: 10rem">
     <div class="row">
       <div class="col-md-3">
         <ul class="list-group">          
@@ -44,7 +44,7 @@
                 {% csrf_token %}              
                <td><input type="number" min="0" step ="1" class="form-control"  id="quantity" aria-label="quantity"></td>  
                <td><input type="number" min="0"  class="form-control" id="weigth" aria-label="weigth"></td>
-               <td><a href="{% url 'orders:cart_add' product.id %}">
+               <td><a href="{% url 'orders:cart_adding' %}">
                 <button class="btn btn-success btn-buy" type="submit" id="submit_btn"
                         data-product_id = "{{product.id}}"
                         data-name = "{{product.subcategory.name}}"

@@ -2,7 +2,12 @@
 {% load static %}
 {% block title %}
   Конструктор стали 
-{% endblock %} 
+{% endblock %}
+{% block header %}
+<header class="header gradient">      
+  {% include 'includes/header.html' %}
+</header>
+{% endblock %}
 {% block content %}
 <div class="container py-5">
   <div class="row">

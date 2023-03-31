@@ -22,8 +22,9 @@
     <nav class="navbar  fixed-top navbar-shop ">
       {% include 'includes/nav.html' %} 
     </nav>   
-    <header class="header gradient">      
-      {% include 'includes/header.html' %}
+    <header> 
+      {%block header%}
+      {% endblock %}     
     </header>
     <main>
       {% block content %}        
