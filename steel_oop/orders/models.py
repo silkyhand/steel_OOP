@@ -43,8 +43,8 @@ class ProductInCart(models.Model):
         weight_item = self.product.weight_item      
         self.price_item = price_item
         self.total_price = int(self.nmb) * price_item
-        self.weight_nmb = weight_item * int(self.nmb) 
-
+        self.weight_nmb = int(self.nmb) * weight_item
+        
         super(ProductInCart, self).save(*args, **kwargs)
 
 
