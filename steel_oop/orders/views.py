@@ -43,7 +43,7 @@ def cart_adding(request):
     session_key = request.session.session_key   
     data = request.POST
     product_id = data.get("product_id")
-    nmb = data.get("nmb")
+    nmb = data.get("nmb")    
    
     new_product, created = ProductInCart.objects.get_or_create(
         session_key=session_key,
@@ -79,5 +79,8 @@ def cart_order(request):
     for item in products_in_cart:
         total_cart_price += item.total_price        
     template = "cart/cart_order.html"
-    context = {"total_cart_price": total_cart_price}   
+    context = {
+        "total_cart_price": total_cart_price,
+        "products_in_cart": products_in_cart,               
+    }   
     return render(request, template, context)

@@ -42,7 +42,7 @@ class SubcategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('subcategory', 'size', 'parameter', 'thickness', 'length', 'area', 'price_tonn',
+    list_display = ('subcategory', 'size', 'parameter', 'thickness', 'length', 'weight_item', 'area', 'price_tonn',
                     'price_item', 'coeff', 'base_price', 'discount',
                     )
     search_fields = ('size',)
@@ -57,7 +57,7 @@ class ProductAdmin(admin.ModelAdmin):
                     )
       }),
       ('Рассчитываемы данные', {
-          'fields': ('price_tonn', 'price_item')
+          'fields': ('weight_item', 'price_tonn', 'price_item')
       }),
     )
 
@@ -72,7 +72,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Productlist)
 class ProductListAdmin(admin.ModelAdmin):
-    list_display = ('subcategory', 'thickness', 'size', 'area', 'price_tonn',
+    list_display = ('subcategory', 'thickness', 'size', 'weight_item', 'area', 'price_tonn',
                     'price_item', 'coeff', 'base_price', 'discount',
                     )
     search_fields = ('thickness',)
@@ -90,14 +90,14 @@ class ProductListAdmin(admin.ModelAdmin):
                     )
       }),
       ('Рассчитываемы данные', {
-          'fields': ('price_tonn', 'price_item')
+          'fields': ('weight_item', 'price_tonn', 'price_item')
       }),
     )
 
 
 @admin.register(ProductNotlist)
 class ProductNotListAdmin(admin.ModelAdmin):
-    list_display = ('subcategory', 'size', 'parameter', 'length', 'price_tonn',
+    list_display = ('subcategory', 'size', 'parameter', 'length', 'weight_item', 'price_tonn',
                     'price_item', 'coeff', 'base_price', 'discount',
                     )
     search_fields = ('size',)
@@ -115,7 +115,7 @@ class ProductNotListAdmin(admin.ModelAdmin):
                     )
       }),
       ('Рассчитываемы данные', {
-          'fields': ('price_tonn', 'price_item')
+          'fields': ('weight_item', 'price_tonn', 'price_item')
       }),
     )
 # @admin.register(ProductList)

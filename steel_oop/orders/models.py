@@ -12,7 +12,12 @@ class ProductInCart(models.Model):
         verbose_name='Товар в корзине',
         on_delete=models.CASCADE,
         related_name='productsincart')
-    nmb = models.IntegerField(default=1)
+    nmb = models.IntegerField('Количество', default=1)
+    weight_nmb = models.DecimalField(
+        'Вес',
+        max_digits=10,
+        decimal_places=2,        
+    )
     price_item = models.DecimalField(
         'Цена за ед.(п/м или шт.)',
         max_digits=7,
@@ -35,8 +40,10 @@ class ProductInCart(models.Model):
 
     def save(self, *args, **kwargs):
         price_item = self.product.price_item
+        weight_item = self.product.weight_item      
         self.price_item = price_item
         self.total_price = int(self.nmb) * price_item
+        self.weight_nmb = weight_item * int(self.nmb) 
 
         super(ProductInCart, self).save(*args, **kwargs)
 

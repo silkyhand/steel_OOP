@@ -50,6 +50,12 @@ class Product(models.Model):
     parameter = models.CharField('Параметры, марка стали', max_length=50, null=True, blank=True)
     thickness = models.CharField('Толщина', max_length=50, null=True, blank=True)
     length = models.IntegerField('Длина', default=1)
+    weight_item = models.DecimalField(
+        'Вес ед, кг.',
+        max_digits=10,
+        decimal_places=2,
+        default=0,        
+    )
     area = models.DecimalField(
         'Квадратные метры',
         max_digits=7,
@@ -85,7 +91,8 @@ class Product(models.Model):
         verbose_name_plural = 'Товары'    
     
     def save(self, *args, **kwargs):
-        "Расчитать стоимость тонны и погонного метра и единицы товара"
+        "Расчитать вес, стоимость тонны и погонного метра единицы товара"
+        self.weight_item = (self.length / self.coeff) * 1000        
         self.price_tonn = round(((self.base_price/100) * (100 - self.discount)) / 100) * 100
         if self.subcategory.category.slug == 'listovoy':
             self.price_item = round(self.price_tonn / self.coeff / 100) * 100
