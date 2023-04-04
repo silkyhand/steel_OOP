@@ -11,28 +11,27 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{% static '' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static '' %}">
     <meta name="msapplication-TileColor" content="#000">
-    <meta name="theme-color" content="#ffffff">    
-    
+    <meta name="theme-color" content="#ffffff">      
     <title> 
       {% block title %}        
       {% endblock %}
     </title>
   </head>
-  <body>
+  <body>   
     <nav class="navbar  fixed-top navbar-shop ">
       {% include 'includes/nav.html' %} 
-    </nav>   
+    </nav>     
     <header> 
       {%block header%}
       {% endblock %}     
-    </header>
+    </header>    
     <main>
       {% block content %}        
       {% endblock %} 
-    </main> 
-    {% include 'includes/footer.html' %} 
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>   
-    <script src="{% static 'js/main.js' %}"></script>        
+    </main>        
+      {% include 'includes/footer.html' %} 
+      <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+      <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>   
+      <script src="{% static 'js/main.js' %}"></script>          
   </body> 
 </html>
