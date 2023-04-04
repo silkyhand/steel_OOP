@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from django.views.decorators.http import require_POST
 from products.models import Product
 from .cart import Cart
@@ -84,3 +85,35 @@ def cart_order(request):
         "products_in_cart": products_in_cart,               
     }   
     return render(request, template, context)
+
+
+def cart_update(request):
+    session_key = request.session.session_key
+    if not session_key:
+        request.session.cycle_key()
+        session_key = request.session.session_key
+
+    products_in_cart = ProductInCart.objects.filter(session_key=session_key, is_active=True)
+    # if not cart:
+    #     cart = Cart.objects.create(session_key=session_key)
+
+    for product in products_in_cart.all():
+        product.quantity = request.POST.get(f'quantity_{product.id}')
+        product.save()
+
+    messages.success(request, 'Cart updated.')
+    return redirect('orders: cart_order')
+
+
+def cart_remove(request, product_id):
+    session_key = request.session.session_key
+    # if not session_key:
+    #     request.session.cycle_key()
+    #     session_key = request.session.session_key
+
+    product = get_object_or_404(ProductInCart, session_key=session_key, id=product_id)
+    product.delete()
+
+    messages.success(request, 'Item removed from cart.')
+    return redirect('orders: cart_order')
+
