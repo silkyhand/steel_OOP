@@ -2,6 +2,7 @@ from orders.models import ProductInCart
 
 
 def getting_cart_info(request):
+    """Подсчет количества товаров в корзине."""
     session_key = request.session.session_key
     if not session_key:
         request.session.cycle_key()

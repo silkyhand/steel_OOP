@@ -98,11 +98,11 @@ def cart_update(request):
     #     cart = Cart.objects.create(session_key=session_key)
 
     for product in products_in_cart.all():
-        product.quantity = request.POST.get(f'quantity_{product.id}')
+        product.nmb = request.POST.get(f'nmb_{product.id}')
         product.save()
 
     messages.success(request, 'Cart updated.')
-    return redirect('orders: cart_order')
+    return redirect('orders:cart_order')
 
 
 def cart_remove(request, product_id):
@@ -115,5 +115,5 @@ def cart_remove(request, product_id):
     product.delete()
 
     messages.success(request, 'Item removed from cart.')
-    return redirect('orders: cart_order')
+    return redirect('orders:cart_order')
 
