@@ -39,13 +39,17 @@
                 <small class="length-info">{{product.size}}</small>
                 </a>
               </td>
-              <td id="length">{{ product.length }}</td>              
+              <td>{{ product.length }}</td>              
               <td>{{ product.price_tonn }}</td>
               <td>{{ product.price_item|floatformat:0 }}</td>
               <form id="form_buying_product" action="{% url 'orders:cart_adding' %}" method="post">
                 {% csrf_token %}                            
-               <td><input type="number" min="0" step ="1" class="form-control" id="quantity_not_list" aria-label="quantity"></td>  
-               <td><input type="number" min="0"  class="form-control" id="weigth" aria-label="weigth"></td>
+               <td>
+                <input type="number" min="0" step ="1" 
+                 class="product-number form-control" id="quantity_not_list"
+                 aria-label="product-number"  data-length="{{ product.length }}" data-weight="{{ product.weight_item }}">
+               </td>  
+               <td><input type="number" min="0"  class="product-weight form-control" id="weigth" aria-label="product-weight"></td>
                <td><a href="{% url 'orders:cart_adding' %}">
                    <button class="btn btn-success btn-buy" type="submit" id="submit_btn"
                            data-product_id = "{{product.id}}"
@@ -55,31 +59,55 @@
                    </a>
                </td>  
               </form>      
-            </tr>
-            <script type="text/javascript"> 
-              var productlength = "{{product.length}}";
-              console.log(productlength)
-           </script>
-           {% endfor %}            
-            </tbody>
+            </tr>                
+          {% endfor %}            
+           </tbody>
         </table>  
       </div>        
     </div>            
   </div> 
-
+{% endblock %}
 
 <script>
-  function roundProductNumber(){
-    var productNumber = document.getElementById("quantity_not_list").value;
-   
-    console.log(productNumber)
+  function updateProductFields(productNumberInput, productWeightInput) {
+    // Get the input value and the product length
+    var productNumber = parseInt(productNumberInput.value);
     
-    var multiple = Math.ceil(productNumber / productlength);
-    var roundProductNumber = multiple * productlength;
-    console.log(roundProductNumber)
-    document.getElementById("quantity_not_list").value = roundProductNumber;
+    var productLength = parseInt(productNumberInput.getAttribute("data-length"));
+    var productWeightItem = parseInt(productNumberInput.getAttribute("data-weight"));
+
+    // Calculate the nearest multiple of the length
+    var multiple = Math.ceil(productNumber / productLength);
+    var newProductNumber = multiple * productLength;
+
+    // Update the input field with the new value
+    productNumberInput.value = newProductNumber;
+
+    // Calculate the product weight and update the corresponding input field
+    var productWeight = newProductNumber * productWeightItem; // Replace 2.5 with the weight of your product
+    productWeightInput.value = productWeight;
 }
 
-document.getElementById("quantity_not_list").addEventListener("input", roundProductNumber)
-</script> 
-{% endblock %}
+// Get all the product input fields
+var productInputs = document.querySelectorAll(".product-number, .product-weight");
+console.log(productInputs)
+
+// Add an event listener to each input field
+for (var i = 0; i < productInputs.length; i++) {
+    productInputs[i].addEventListener("input", function() {
+        // Get the input fields for this product
+        var productNumberInput = this.parentElement.querySelector(".product-number");
+        var productWeightInput = this.parentElement.querySelector(".product-weight");
+
+        // Update the product fields based on the input
+        if (this.classList.contains("product-number")) {
+            updateProductFields(productNumberInput, productWeightInput);
+        } else {
+            var productWeight = parseFloat(this.value);
+            var productNumber = productWeight / productWeightItem; // Replace 2.5 with the weight of your product
+            productNumberInput.value = Math.ceil(productNumber / productNumberInput.getAttribute("data-length")) * productNumberInput.getAttribute("data-length");
+        }
+    });
+}
+</script>
+ 
