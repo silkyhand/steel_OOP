@@ -4,14 +4,11 @@ console.log(form);
 form.on('submit', function(e){
     e.preventDefault();
     var nmb = $("#quantity").val();
-    var weigth = $("#weigth").val();
-    console.log(nmb);
-    console.log(weigth);
+    var weigth = $("#weigth").val();   
     var submit_btn = $("#submit_btn");
     var product_id = submit_btn.data('product_id');
     var product_name = submit_btn.data('name');
-    console.log(product_id);
-    console.log(product_name);
+   
 
         var data = {};
         data.product_id = product_id;
@@ -21,16 +18,15 @@ form.on('submit', function(e){
         data["csrfmiddlewaretoken"] = csrf_token;
         var url = form.attr("action");
 
-    console.log(data)    
-        
+            
         $.ajax({
             url: url,
             type: 'POST',
             data: data,
             cache: true,
             success: function (data) {
-                console.log("OK");
-                console.log(data.products_total_nmb);
+                // console.log("OK");
+                // console.log(data.products_total_nmb);
                 if (products_total_nmb) {
                     $("#products_total_nmb").text(data.products_total_nmb);  
                 }
@@ -46,13 +42,26 @@ form.on('submit', function(e){
 $(document).ready(function(){
     $('.header').height($(window).height());
 
-    $("#quantity").keyup(function() {
-        $("#weigth").val($(this).val() * 2);
-    }) 
+    // $("#quantity").keyup(function() {
+    //     $("#weigth").val($(this).val() * 2);
+    // }) 
      
 
-    $("#weigth").keyup(function() {
-        $("#quantity").val($(this).val() / 2); 
+    // $("#weigth").keyup(function() {
+    //     $("#quantity").val($(this).val() / 2); 
      
-    }) 
-});     
+    // }) 
+});  
+
+// function roundProductNumber(){
+//     var productNumber = document.getElementById("quantity_not_list").value;
+//     var productlength = "{{ product.length }}";
+//     console.log(productNumber)
+//     console.log(productlength)
+//     var multiple = Math.ceil(productNumber / productlength)
+//     var roundProductNumber = multiple * productlength
+//     console.log(roundProductNumber)
+//     document.getElementById("quantity_not_list").value = roundProductNumber
+// }
+
+// document.getElementById("quantity_not_list").addEventListener("input", roundProductNumber)

@@ -39,12 +39,12 @@
                 <small class="length-info">{{product.size}}</small>
                 </a>
               </td>
-              <td>{{ product.length }}</td>
+              <td id="length">{{ product.length }}</td>              
               <td>{{ product.price_tonn }}</td>
               <td>{{ product.price_item|floatformat:0 }}</td>
               <form id="form_buying_product" action="{% url 'orders:cart_adding' %}" method="post">
                 {% csrf_token %}                            
-               <td><input type="number" min="0" step ="1" class="form-control" id="quantity" aria-label="quantity"></td>  
+               <td><input type="number" min="0" step ="1" class="form-control" id="quantity_not_list" aria-label="quantity"></td>  
                <td><input type="number" min="0"  class="form-control" id="weigth" aria-label="weigth"></td>
                <td><a href="{% url 'orders:cart_adding' %}">
                    <button class="btn btn-success btn-buy" type="submit" id="submit_btn"
@@ -56,10 +56,30 @@
                </td>  
               </form>      
             </tr>
+            <script type="text/javascript"> 
+              var productlength = "{{product.length}}";
+              console.log(productlength)
+           </script>
            {% endfor %}            
             </tbody>
         </table>  
       </div>        
     </div>            
-  </div>    
+  </div> 
+
+
+<script>
+  function roundProductNumber(){
+    var productNumber = document.getElementById("quantity_not_list").value;
+   
+    console.log(productNumber)
+    
+    var multiple = Math.ceil(productNumber / productlength);
+    var roundProductNumber = multiple * productlength;
+    console.log(roundProductNumber)
+    document.getElementById("quantity_not_list").value = roundProductNumber;
+}
+
+document.getElementById("quantity_not_list").addEventListener("input", roundProductNumber)
+</script> 
 {% endblock %}

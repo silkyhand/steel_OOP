@@ -29,15 +29,15 @@ from .models import Category, Product, Productlist, ProductNotlist, Subcategory
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name_cat', 'slug',)
     search_fields = ('name_cat',)
-    # list_editable = ('name_cat',)
+    prepopulated_fields = {'slug': ('name_cat',)}
 
 
 @admin.register(Subcategory)
 class SubcategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'slug',)
     search_fields = ('name',)
-    list_filter = ('category',)
-    list_editable = ('slug',)
+    list_filter = ('category',)    
+    prepopulated_fields = {'slug': ('name',)}
     
 
 @admin.register(Product)
