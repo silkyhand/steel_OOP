@@ -65,3 +65,7 @@ $(document).ready(function(){
 // }
 
 // document.getElementById("quantity_not_list").addEventListener("input", roundProductNumber)
+
+
+
+

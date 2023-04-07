@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load l10n %}
 {% block title %}
   ТОВАРЫ  
 {% endblock %} 
@@ -47,9 +48,9 @@
                <td>
                 <input type="number" min="0" step ="1" 
                  class="product-number form-control" id="quantity_not_list"
-                 aria-label="product-number"  data-length="{{ product.length }}" data-weight="{{ product.weight_item }}">
+                 aria-label="product-number"  data-length="{{ product.length }}" data-weight="{{ product.weight_item|unlocalize }}">
                </td>  
-               <td><input type="number" min="0"  class="product-weight form-control" id="weigth" aria-label="product-weight"></td>
+               <td><input type="number" min="0"  class="product-weight form-control" id="weigth" aria-label="product-weight" value="{{ product.weight_item|unlocalize }}"></td>
                <td><a href="{% url 'orders:cart_adding' %}">
                    <button class="btn btn-success btn-buy" type="submit" id="submit_btn"
                            data-product_id = "{{product.id}}"
@@ -66,15 +67,24 @@
       </div>        
     </div>            
   </div> 
-{% endblock %}
-
-<script>
+  <script>
   function updateProductFields(productNumberInput, productWeightInput) {
     // Get the input value and the product length
-    var productNumber = parseInt(productNumberInput.value);
+    if (productNumberInput) {
+      var productNumber = parseInt(productNumberInput.value)
+    } else {
+      var productNumber = 1
+    };
+    console.log(productNumber)
+
+    if (productWeightInput) {
+      var productWeight = parseInt(productWeightInput.value)
+    } else {
+      var productWeight = 1
+    };
     
     var productLength = parseInt(productNumberInput.getAttribute("data-length"));
-    var productWeightItem = parseInt(productNumberInput.getAttribute("data-weight"));
+    var productWeightItem = parseFloat(productNumberInput.getAttribute("data-weight"));
 
     // Calculate the nearest multiple of the length
     var multiple = Math.ceil(productNumber / productLength);
@@ -86,18 +96,21 @@
     // Calculate the product weight and update the corresponding input field
     var productWeight = newProductNumber * productWeightItem; // Replace 2.5 with the weight of your product
     productWeightInput.value = productWeight;
-}
-
-// Get all the product input fields
-var productInputs = document.querySelectorAll(".product-number, .product-weight");
-console.log(productInputs)
-
-// Add an event listener to each input field
-for (var i = 0; i < productInputs.length; i++) {
-    productInputs[i].addEventListener("input", function() {
+  }
+  
+    // Get all the product input fields
+  var productInputs = document.querySelectorAll(".product-number, .product-weight");
+  console.log(productInputs)
+  
+    // Add an event listener to each input field
+  for (var i = 0; i < productInputs.length; i++) {
+      productInputs[i].addEventListener("input", function() {
         // Get the input fields for this product
         var productNumberInput = this.parentElement.querySelector(".product-number");
+        console.log(productNumberInput)       
+        
         var productWeightInput = this.parentElement.querySelector(".product-weight");
+        console.log(productWeightInput)
 
         // Update the product fields based on the input
         if (this.classList.contains("product-number")) {
@@ -107,7 +120,8 @@ for (var i = 0; i < productInputs.length; i++) {
             var productNumber = productWeight / productWeightItem; // Replace 2.5 with the weight of your product
             productNumberInput.value = Math.ceil(productNumber / productNumberInput.getAttribute("data-length")) * productNumberInput.getAttribute("data-length");
         }
-    });
-}
-</script>
- 
+      });
+  }
+  </script>
+{% endblock %}
+
