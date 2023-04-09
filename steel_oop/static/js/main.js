@@ -38,8 +38,7 @@ form.on('submit', function(e){
     })
 });  
 
-
-$(document).ready(function(){
+$(document).ready(function(){    
     $('.header').height($(window).height());
 
     // $("#quantity").keyup(function() {
@@ -51,6 +50,32 @@ $(document).ready(function(){
     //     $("#quantity").val($(this).val() / 2); 
      
     // }) 
+    
+    $('.product-number, .product-weight').on('input', function() {
+        var $form = $(this).closest('#form_product');
+        console.log($form)
+        var length = parseFloat($(this).data('length')); 
+        console.log(length)       
+        var weight = parseFloat($(this).data('weight'));
+        console.log(weight)
+        var quantity = $form.find('.product-number').val();
+        console.log(quantity)
+        var totalWeight = $form.find('.product-weight').val();
+
+        if ($(this).hasClass('product-number')) {
+        totalWeight = (quantity * length * weight / 1000).toFixed(2);
+        $form.find('.product-weight').val(totalWeight);
+        } else {
+        quantity = (totalWeight * 1000 / length / weight).toFixed(2);
+        $form.find('.product-number').val(quantity);
+        }
+
+        var totalPrice = (price * quantity).toFixed(2);
+        $form.find('.btn-buy').data('quantity', quantity);
+        $form.find('.btn-buy').data('total-price', totalPrice);
+    });
+    
+           
 });  
 
 // function roundProductNumber(){
