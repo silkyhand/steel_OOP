@@ -50,33 +50,39 @@ $(document).ready(function(){
     //     $("#quantity").val($(this).val() / 2); 
      
     // }) 
+
+    var timeout = null;
     
-    $('.product-number, .product-weight').on('input', function() {
+    $('.product-number, .product-weight').on('keyup', function() {
+        clearTimeout(timeout);        
         var $form = $(this).closest('.product-data');        
         var length = parseFloat($(this).data('length'));         
         var weightItem = parseFloat($(this).data('weight'));      
         var quantity = $form.find('.product-number').val();        
         var totalWeight = $form.find('.product-weight').val();
-           
-        if ($(this).hasClass('product-number')) {
-            var multiple = Math.ceil(quantity / length)
-            var roundQuantity = multiple * length
-            $form.find('.product-number').val(roundQuantity);
-            totalWeight = (roundQuantity * weightItem  / 1000);        
-            $form.find('.product-weight').val(totalWeight);
-        } else {
-            quantity = Math.ceil(totalWeight / weightItem );
-            totalWeight = quantity * weightItem
-            console.log(totalWeight)
-            $form.find('.product-number').val(quantity);
-            $form.find('.product-weight').val(totalWeight);
-        }
         
-        // $form.find('.btn-buy').data('quantity', quantity);
-        // $form.find('.btn-buy').data('total-price', totalPrice);
-    });
     
-           
+        if ($(this).hasClass('product-number')) {
+            timeout = setTimeout(function() {
+                var multiple = Math.ceil(quantity / length)
+                var roundQuantity = multiple * length
+                $form.find('.product-number').val(roundQuantity);
+                totalWeight = Math.ceil(roundQuantity * weightItem);        
+                $form.find('.product-weight').val(totalWeight);
+            }, 1000);
+        } else {
+            timeout = setTimeout(function() {
+                quantity = Math.ceil(totalWeight / weightItem );
+                console.log(quantity)
+                totalWeight = Math.ceil(quantity * weightItem)
+                console.log(totalWeight)
+                $form.find('.product-number').val(quantity);
+                $form.find('.product-weight').val(totalWeight);
+            }, 1000);    
+        }        
+        $form.find('.btn-buy').data('quantity', quantity);
+        $form.find('.btn-buy').data('total-price', totalPrice);
+    });           
 });  
 
 // function roundProductNumber(){
