@@ -52,27 +52,28 @@ $(document).ready(function(){
     // }) 
     
     $('.product-number, .product-weight').on('input', function() {
-        var $form = $(this).closest('#form_product');
-        console.log($form)
-        var length = parseFloat($(this).data('length')); 
-        console.log(length)       
-        var weight = parseFloat($(this).data('weight'));
-        console.log(weight)
-        var quantity = $form.find('.product-number').val();
-        console.log(quantity)
+        var $form = $(this).closest('.product-data');        
+        var length = parseFloat($(this).data('length'));         
+        var weightItem = parseFloat($(this).data('weight'));      
+        var quantity = $form.find('.product-number').val();        
         var totalWeight = $form.find('.product-weight').val();
-
+           
         if ($(this).hasClass('product-number')) {
-        totalWeight = (quantity * length * weight / 1000).toFixed(2);
-        $form.find('.product-weight').val(totalWeight);
+            var multiple = Math.ceil(quantity / length)
+            var roundQuantity = multiple * length
+            $form.find('.product-number').val(roundQuantity);
+            totalWeight = (roundQuantity * weightItem  / 1000);        
+            $form.find('.product-weight').val(totalWeight);
         } else {
-        quantity = (totalWeight * 1000 / length / weight).toFixed(2);
-        $form.find('.product-number').val(quantity);
+            quantity = Math.ceil(totalWeight / weightItem );
+            totalWeight = quantity * weightItem
+            console.log(totalWeight)
+            $form.find('.product-number').val(quantity);
+            $form.find('.product-weight').val(totalWeight);
         }
-
-        var totalPrice = (price * quantity).toFixed(2);
-        $form.find('.btn-buy').data('quantity', quantity);
-        $form.find('.btn-buy').data('total-price', totalPrice);
+        
+        // $form.find('.btn-buy').data('quantity', quantity);
+        // $form.find('.btn-buy').data('total-price', totalPrice);
     });
     
            
