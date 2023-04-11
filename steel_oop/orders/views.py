@@ -43,6 +43,7 @@ def cart_adding(request):
     return_dict = dict()
     session_key = request.session.session_key   
     data = request.POST
+    print(data)
     product_id = data.get("product_id")
     nmb = data.get("nmb")    
    
@@ -62,13 +63,13 @@ def cart_adding(request):
 
     return_dict["products"] = list()
 
-    for item in products_in_cart:
-        product_dict = dict()
-        product_dict["id"] = item.id
-        product_dict["name"] = item.product.subcategory.name
-        product_dict["price_item"] = item.price_item
-        product_dict["nmb"] = item.nmb
-        return_dict["products"].append(product_dict)
+    # for item in products_in_cart:
+    #     product_dict = dict()
+    #     product_dict["id"] = item.id
+    #     product_dict["name"] = item.product.subcategory.name
+    #     product_dict["price_item"] = item.price_item
+    #     product_dict["nmb"] = item.nmb
+    #     return_dict["products"].append(product_dict)
 
     return JsonResponse(return_dict)
 

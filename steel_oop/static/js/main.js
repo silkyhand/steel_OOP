@@ -1,23 +1,25 @@
 $(document).ready(function(){    
-var form = $('#form_buying_product'); 
-console.log(form);
-form.on('submit', function(e){
-    e.preventDefault();
-    var nmb = $("#quantity").val();
-    var weigth = $("#weigth").val();   
-    var submit_btn = $("#submit_btn");
-    var product_id = submit_btn.data('product_id');
-    var product_name = submit_btn.data('name');
-   
+    var form = $('#form_buying_product'); 
+    console.log(form);
+    form.on('submit', function(e){
+        e.preventDefault();
+        var nmb = $("#quantity").val();
+        var weight = $("#weight").val();
+        console.log(nmb);
+        console.log(weight);
+        var submit_btn = $("#submit_btn");
+        var product_id = submit_btn.data('product_id');       
+        var product_name = submit_btn.data('name');        
+        var url = form.attr("action");
+        console.log(url)
 
         var data = {};
         data.product_id = product_id;
         data.nmb = nmb;  
-        data.weigth = weigth;      
+        data.weight = weight;      
         var csrf_token = jQuery("[name=csrfmiddlewaretoken]").val();        
         data["csrfmiddlewaretoken"] = csrf_token;
-        var url = form.attr("action");
-
+        
             
         $.ajax({
             url: url,
@@ -40,26 +42,16 @@ form.on('submit', function(e){
 
 $(document).ready(function(){    
     $('.header').height($(window).height());
-
-    // $("#quantity").keyup(function() {
-    //     $("#weigth").val($(this).val() * 2);
-    // }) 
-     
-
-    // $("#weigth").keyup(function() {
-    //     $("#quantity").val($(this).val() / 2); 
-     
-    // }) 
-
+    
     var timeout = null;
     
     $('.product-number, .product-weight').on('keyup', function() {
         clearTimeout(timeout);        
         var $form = $(this).closest('.product-data');        
         var length = parseFloat($(this).data('length'));         
-        var weightItem = parseFloat($(this).data('weight'));      
+        var weightItem = parseFloat($(this).data('weight'));           
         var quantity = $form.find('.product-number').val();        
-        var totalWeight = $form.find('.product-weight').val();
+        var totalWeight = $form.find('.product-weight').val();       
         
     
         if ($(this).hasClass('product-number')) {
@@ -69,35 +61,18 @@ $(document).ready(function(){
                 $form.find('.product-number').val(roundQuantity);
                 totalWeight = Math.ceil(roundQuantity * weightItem);        
                 $form.find('.product-weight').val(totalWeight);
-            }, 1000);
+            }, 2000);
         } else {
             timeout = setTimeout(function() {
-                quantity = Math.ceil(totalWeight / weightItem );
-                console.log(quantity)
-                totalWeight = Math.ceil(quantity * weightItem)
+                quantityItem = Math.ceil(totalWeight / weightItem);
+                quantityMetr = quantityItem * length
+                totalWeight = Math.ceil(quantityItem * weightItem)
                 console.log(totalWeight)
-                $form.find('.product-number').val(quantity);
+                $form.find('.product-number').val(quantityMetr);
                 $form.find('.product-weight').val(totalWeight);
-            }, 1000);    
+            }, 2000);    
         }        
-        $form.find('.btn-buy').data('quantity', quantity);
-        $form.find('.btn-buy').data('total-price', totalPrice);
+        // $form.find('.btn-buy').data('quantity', quantity);
+        //$form.find('.btn-buy').data('total-price', totalPrice);
     });           
 });  
-
-// function roundProductNumber(){
-//     var productNumber = document.getElementById("quantity_not_list").value;
-//     var productlength = "{{ product.length }}";
-//     console.log(productNumber)
-//     console.log(productlength)
-//     var multiple = Math.ceil(productNumber / productlength)
-//     var roundProductNumber = multiple * productlength
-//     console.log(roundProductNumber)
-//     document.getElementById("quantity_not_list").value = roundProductNumber
-// }
-
-// document.getElementById("quantity_not_list").addEventListener("input", roundProductNumber)
-
-
-
-
