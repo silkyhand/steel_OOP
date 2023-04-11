@@ -7,7 +7,7 @@
 {% block content %}
   <div class="container" style="padding-top: 10rem">
     <div class="row">
-      <div class="col-md-3">                
+      <div class="col-md-3 d-none d-lg-block">                
         <ul class="list-group">                     
           {% for subcategory in subcategories_list %}          
           <a href="{% url 'products:products_list' subcategory.slug %}" class="list-group-item list-group-item-action active">
@@ -33,7 +33,7 @@
             </thead>      
             <tbody>            
             {% for product in products_list %}            
-            <tr class ="product-data" id="form_buying_product">
+            <tr class ="product-data" >
               <td class="text-center block-3">
                 <a href="{% url 'products:product_detail' product.id %}">
                 {{ product.subcategory.name }}
@@ -43,7 +43,7 @@
               <td>{{ product.length }}</td>              
               <td>{{ product.price_tonn }}</td>
               <td>{{ product.price_item|floatformat:0 }}</td>
-              <form class="product" id="form_product" action="{% url 'orders:cart_adding' %}" method="post">{% csrf_token %}                               
+              <form class="product" id="form_buying_product" action="{% url 'orders:cart_adding' %}" method="post">{% csrf_token %}                               
                 <td>
                   <input type="number" min="0" step ="1" 
                     class="product-number form-control" id="quantity"

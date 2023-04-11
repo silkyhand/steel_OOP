@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load l10n %}
 {% block title %}
   ТОВАРЫ  
 {% endblock %} 
 {% block content %}
   <div class="container" style="padding-top: 10rem">
     <div class="row">
-      <div class="col-md-3">
+      <div class="col-md-3 d-none d-lg-block">
         <ul class="list-group">          
           {% for subcategory in subcategories_list %}
           <a href="{% url 'products:products_list' subcategory.slug %}" class="list-group-item list-group-item-action active">
@@ -30,7 +31,7 @@
             </thead>
             <tbody>
             {% for product in products_list %}            
-            <tr>
+            <tr class ="product-data">
               <td class="text-center block-3">
                 <a href="{% url 'products:product_detail' product.id %}">
                 {{ product.subcategory.name }}
@@ -42,15 +43,22 @@
               <td>{{ product.price_item|floatformat:0 }}</td>
               <form id="form_buying_product" action="{% url 'orders:cart_adding' %}" method="post">
                 {% csrf_token %}              
-               <td><input type="number" min="0" step ="1" class="form-control"  id="quantity_list" aria-label="quantity"></td>  
-               <td><input type="number" min="0"  class="form-control" id="weigth" aria-label="weigth"></td>
-               <td><a href="{% url 'orders:cart_adding' %}">
-                <button class="btn btn-success btn-buy" type="submit" id="submit_btn"
-                        data-product_id = "{{product.id}}"
-                        data-name = "{{product.subcategory.name}}"
-                        data-price = "{{product.price_item}}"
-                >В машину</button>
-                </a> 
+                <td><input type="number" min="0" step ="1" 
+                  class="product-number form-control" id="quantity"
+                  aria-label="product-number"  data-length="{{ product.length }}" data-weight="{{ product.weight_item|unlocalize }}">
+                </td>  
+                <td id="weight-item"><input type="number" min="0" 
+                  class="product-weight form-control" id="weight" aria-label="product-weight"
+                  data-length="{{ product.length }}" data-weight="{{ product.weight_item|unlocalize }}"
+                  value=""><p class="text-center"><small style="color:blue">Вес ед. {{ product.weight_item|unlocalize }} кг.</small></p>
+                </td>
+                <td><a href="{% url 'orders:cart_adding' %}">
+                  <button class="btn btn-success btn-buy" type="submit" id="submit_btn"
+                          data-product_id = "{{product.id}}"
+                          data-name = "{{product.subcategory.name}}"
+                          data-price = "{{product.price_item}}"
+                  >В машину</button></a>                   
+                </td> 
               </form>      
             </tr>
            {% endfor %}            
