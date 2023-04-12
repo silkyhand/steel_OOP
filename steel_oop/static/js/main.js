@@ -1,35 +1,29 @@
 $(document).ready(function(){    
-    var $button = $('.product'); 
-    console.log($button);
-    $button.on('submit', function(e){
+    $('.btn-buy').click(function(e) {
         e.preventDefault();
-        var nmb = $("#quantity").val();
-        var weight = $button.find("#weight").val();
-        console.log(nmb);
-        console.log(weight);
-        var submit_btn = $("#submit_btn");
-        console.log(submit_btn);
-        var product_id = submit_btn.data('product_id');       
-        var product_name = submit_btn.data('name');        
-        var url = $button.attr("action");
-        console.log(url)
+        var row = $(this).closest('tr'); 
+        var productQuantity = row.find('.product-number').val();        
+        var productWeight = row.find('.product-weight').val();       
+        var productId = $(this).data('product_id'); 
+        var name = $(this).data('name'); 
+        var url = $(this).data("action");
+        
 
         var data = {};
-        data.product_id = product_id;
-        data.nmb = nmb;  
-        data.weight = weight;      
-        var csrf_token = jQuery("[name=csrfmiddlewaretoken]").val();        
-        data["csrfmiddlewaretoken"] = csrf_token;
-        
+        data.product_id = productId;
+        data.nmb = productQuantity;  
+        var csrf_token = jQuery("[name=csrfmiddlewaretoken]").val(); 
+        data.weight = productWeight;  
+        // var csrf = $('input[name=csrfmiddlewaretoken]').val();            
+        // var csrf_token = jQuery("[name=csrfmiddlewaretoken]").val();        
+        data["csrfmiddlewaretoken"] = csrf_token;        
             
-        $.ajax({
-            url: url,
+        $.ajax({            
             type: 'POST',
+            url: url,
             data: data,
             cache: true,
-            success: function (data) {
-                // console.log("OK");
-                // console.log(data.products_total_nmb);
+            success: function (data) {                
                 if (products_total_nmb) {
                     $("#products_total_nmb").text(data.products_total_nmb);  
                 }
