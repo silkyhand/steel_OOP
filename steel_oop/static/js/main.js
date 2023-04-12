@@ -1,16 +1,17 @@
 $(document).ready(function(){    
-    var form = $('#form_buying_product'); 
-    console.log(form);
-    form.on('submit', function(e){
+    var $button = $('.product'); 
+    console.log($button);
+    $button.on('submit', function(e){
         e.preventDefault();
         var nmb = $("#quantity").val();
-        var weight = $("#weight").val();
+        var weight = $button.find("#weight").val();
         console.log(nmb);
         console.log(weight);
         var submit_btn = $("#submit_btn");
+        console.log(submit_btn);
         var product_id = submit_btn.data('product_id');       
         var product_name = submit_btn.data('name');        
-        var url = form.attr("action");
+        var url = $button.attr("action");
         console.log(url)
 
         var data = {};
@@ -47,7 +48,7 @@ $(document).ready(function(){
     
     $('.product-number, .product-weight').on('keyup', function() {
         clearTimeout(timeout);        
-        var $form = $(this).closest('.product-data');        
+        var $form = $(this).closest('.product-data');            
         var length = parseFloat($(this).data('length'));         
         var weightItem = parseFloat($(this).data('weight'));           
         var quantity = $form.find('.product-number').val();        
@@ -59,9 +60,9 @@ $(document).ready(function(){
                 var multiple = Math.ceil(quantity / length)
                 var roundQuantity = multiple * length
                 $form.find('.product-number').val(roundQuantity);
-                totalWeight = Math.ceil(roundQuantity * weightItem);        
+                totalWeight = Math.ceil(multiple* weightItem);        
                 $form.find('.product-weight').val(totalWeight);
-            }, 2000);
+            }, 1800);
         } else {
             timeout = setTimeout(function() {
                 quantityItem = Math.ceil(totalWeight / weightItem);
@@ -70,7 +71,7 @@ $(document).ready(function(){
                 console.log(totalWeight)
                 $form.find('.product-number').val(quantityMetr);
                 $form.find('.product-weight').val(totalWeight);
-            }, 2000);    
+            }, 1800);    
         }        
         // $form.find('.btn-buy').data('quantity', quantity);
         //$form.find('.btn-buy').data('total-price', totalPrice);

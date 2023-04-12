@@ -43,7 +43,7 @@
               <td>{{ product.length }}</td>              
               <td>{{ product.price_tonn }}</td>
               <td>{{ product.price_item|floatformat:0 }}</td>
-              <form class="product" id="form_buying_product" action="{% url 'orders:cart_adding' %}" method="post">{% csrf_token %}                               
+              <form class="product" id="form_buying_product" action="" method="post">{% csrf_token %}                               
                 <td>
                   <input type="number" min="0" step ="1" 
                     class="product-number form-control" id="quantity"
@@ -54,7 +54,7 @@
                     data-length="{{ product.length }}" data-weight="{{ product.weight_item|unlocalize }}"
                     value=""><p class="text-center"><small style="color:blue">Вес ед. {{ product.weight_item|unlocalize }} кг.</small></p>
                 </td>
-                <td><a href="{% url 'orders:cart_adding' %}">
+                <td><a href="">
                     <button class="btn btn-success btn-buy" type="submit" id="submit_btn"
                             data-product_id = "{{product.id}}"
                             data-name = "{{product.subcategory.name}}"
@@ -65,8 +65,7 @@
             </tr>                          
            {% endfor %}                  
            </tbody>                      
-        </table> 
-          
+        </table>           
       </div>        
     </div>            
   </div>  
