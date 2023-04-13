@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.contrib.auth import get_user_model
 from django.db import models
 from products.models import Product
@@ -14,7 +15,7 @@ class ProductInCart(models.Model):
         related_name='productsincart')
     nmb = models.IntegerField('Количество', default=1)
     weight_nmb = models.DecimalField(
-        'Вес',
+        'Общий вес товаров в корзине',
         max_digits=10,
         decimal_places=2,        
     )
@@ -23,7 +24,10 @@ class ProductInCart(models.Model):
         max_digits=7,
         decimal_places=1,
         default=0)
-    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    total_price = models.DecimalField(
+        'Общая стоимость товара в корзине', 
+        max_digits=10, decimal_places=2, default=0,
+    )
     is_active = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
@@ -40,10 +44,12 @@ class ProductInCart(models.Model):
 
     def save(self, *args, **kwargs):
         price_item = self.product.price_item
-        weight_item = self.product.weight_item      
+        weight_item = self.product.weight_item
+        length = Decimal(self.product.length)
+
         self.price_item = price_item
         self.total_price = int(self.nmb) * price_item
-        self.weight_nmb = int(self.nmb) * weight_item        
+        self.weight_nmb = round(int(self.nmb) / length * weight_item)        
         super(ProductInCart, self).save(*args, **kwargs)
 
 

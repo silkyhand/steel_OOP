@@ -16,7 +16,7 @@
           {% endfor %}
       </div>
       <div class="col-sm-12 col-md-9">
-        <h1>{{ product.subcategory.name }}</h1>
+        <h2>{{ subcategory.name }}</h2>
         <table class="table table-striped table_boarded table-hover">
           <thead>
             <tr>
@@ -57,6 +57,7 @@
                           data-product_id = "{{product.id}}"
                           data-name = "{{product.subcategory.name}}"
                           data-price = "{{product.price_item}}"
+                          data-action = "{% url 'orders:cart_adding' %}"
                   >В машину</button></a>                   
                 </td> 
               </form>      

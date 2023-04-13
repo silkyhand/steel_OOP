@@ -71,3 +71,32 @@ $(document).ready(function(){
         //$form.find('.btn-buy').data('total-price', totalPrice);
     });           
 });  
+
+
+$(document).ready(function(){    
+
+    var timeout = null;
+
+    $('.product-number-cart').on('keyup', function(e) {
+        e.preventDefault();
+        clearTimeout(timeout);
+        var $productCart = $(this).closest('.product-data-cart');             
+        var cartProductNmb = $productCart.find('.product-number-cart').val();  
+        console.log(cartProductNmb)         
+        var lengthCart = parseFloat($(this).data('len'));  
+        console.log(lengthCart)         
+        //var weightItem = parseFloat($(this).data('weight'));           
+        //var quantity = $form.find('.product-number').val();        
+        //var totalWeight = $form.find('.product-weight').val();       
+        timeout = setTimeout(function(){
+            var multiple = Math.ceil(cartProductNmb / lengthCart)
+            var roundQuantity = multiple * lengthCart
+            $productCart.find('.product-number-cart').val(roundQuantity);
+            // totalWeight = Math.ceil(multiple* weightItem);        
+            // $form.find('.product-weight').val(totalWeight);
+        }, 1500);       
+    });
+});
+
+
+   

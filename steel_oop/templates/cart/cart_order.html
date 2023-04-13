@@ -22,19 +22,26 @@
             </thead>
             <tbody>
                 {% for product in products_in_cart %}
-              <tr>
-                <td class="text-center block-3">                
-                  {{ product.product.subcategory.name }}                
-                </td>
-                <td>{{ product.price_item|floatformat:0 }}</td>              
-                <td>
-                  <input type="number" value="{{ product.nmb }}"
-                   min="0" step ="1" class="form-control"  id="quantity" name="nmb_{{ product.id }}" aria-label="quantity">
-                </td>       
-                <td>{{ product.weight_nmb }}</td>
-                <td>{{ product.total_price }}</td>              
-                <td><a href="{% url 'orders:cart_remove' product.id %}">Удалить</a></td>                
-              </tr>
+                  <tr class="product-data-cart">
+                    <td class="text-center block-3" style="color:blue">                
+                      {{ product.product.subcategory.name }}
+                      {% if product.product.thickness %}
+                         <p><small> {{ product.product.thickness }}</small></p> 
+                      {% else %}
+                         <p><small>длина {{ product.product.length }}</small></p>   
+                      {% endif %}                    
+                    </td>
+                    <td>{{ product.price_item|floatformat:0 }}</td>              
+                    <td>
+                      <input type="number" value="{{ product.nmb }}"
+                      min="0" step ="1" class="product-number-cart form-control" 
+                      id="quantity-cart" name="nmb_{{ product.id }}" 
+                      aria-label="quantity" data-len="{{ product.product.length }}">
+                    </td>       
+                    <td>{{ product.weight_nmb|floatformat:0 }}</td>
+                    <td>{{ product.total_price }}</td>              
+                    <td><a href="{% url 'orders:cart_remove' product.id %}">Удалить</a></td>                
+                  </tr>
                 {% endfor %} 
             </tbody>
           </table>  
