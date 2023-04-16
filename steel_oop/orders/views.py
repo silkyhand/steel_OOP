@@ -108,9 +108,9 @@ def cart_update(request):
 
 def cart_remove(request, product_id):
     session_key = request.session.session_key
-    # if not session_key:
-    #     request.session.cycle_key()
-    #     session_key = request.session.session_key
+    if not session_key:
+        request.session.cycle_key()
+        session_key = request.session.session_key
 
     product = get_object_or_404(ProductInCart, session_key=session_key, id=product_id)
     product.delete()

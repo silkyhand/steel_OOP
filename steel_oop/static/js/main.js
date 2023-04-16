@@ -96,7 +96,28 @@ $(document).ready(function(){
             // $form.find('.product-weight').val(totalWeight);
         }, 1500);       
     });
+
 });
 
+$(document).ready(function(){
+    $('.btn-buy').click(function(e){ /* Клик по кнопке "Добавить в корзину" */
+	var btnWrap = $(this).parents('.btn-wrap'); /* Запоминаем враппер кнопки */
+  	btnWrap.append('<div class="animtocart"></div>'); /* Добавляем во враппер кружок, который будет анимирован и улетать от кнопки в корзину */
+    $('.animtocart').css({ /* Присваиваем стили кружку и позицию курсора мыши */
+    	'position' : 'absolute',
+      	'background' : 'blue',
+      	'width' :  '25px',
+      	'height' : '25px',
+      	'border-radius' : '100px',
+      	'z-index' : '9999999999',
+      	'left' : e.pageX-25,
+    	'top' : e.pageY-25,
+    });
+	var cart = $('.btn-cart').offset(); /* Получаем местоположение корзины на странице, чтобы туда полетел кружок */
+	$('.animtocart').animate({ top: cart.top + 'px', left: cart.left + 'px', width: 0, height: 0 }, 800, function(){ /* Делаем анимацию полёта кружка от кнопки в корзину и по окончанию, удаляем его */
+		$(this).remove();
+    });
+});
 
    
+});    
