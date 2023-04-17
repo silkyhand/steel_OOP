@@ -19,7 +19,10 @@ class Order(models.Model):
         ('in_progress', 'В обработке'),
         ('done', 'Выполнен'),
     )
-    status = models.CharField('Статус заказа', max_length=20, choices=STATUS_CHOICES, default='new')
+    status = models.CharField('Статус заказа',
+                              max_length=20,
+                              choices=STATUS_CHOICES,
+                              default='new')
 
     def __str__(self):
         return f'Заказ #{self.id}'
@@ -27,23 +30,46 @@ class Order(models.Model):
     def get_total_cost(self):
         return sum(item.get_cost() for item in self.items.all())
     
+    class Meta:
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы' 
+    
 
 class ProductInOrder(models.Model):
     order = models.ForeignKey(
         Order,
-        verbose_name='Товар в заказе',
+        verbose_name='Заказ',
         on_delete=models.CASCADE,
-         related_name='items')
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    quantity = models.PositiveIntegerField(default=1)
+        related_name='items')
+    product = models.ForeignKey(Product,
+                                verbose_name='Товар в заказе',
+                                on_delete=models.CASCADE,
+                                related_name="order_items")    
+    nmb = models.PositiveIntegerField(default=1)
+    weight_nmb = models.DecimalField(
+        'Общий вес товаров в корзине',
+        max_digits=10,
+        decimal_places=2,        
+    )
+    price_item = models.DecimalField(
+        'Цена за ед.(п/м или шт.)',
+        max_digits=7,
+        decimal_places=1,
+        default=0)
+    total_price = models.DecimalField(
+        'Общая стоимость товара в корзине', 
+        max_digits=10, decimal_places=2, default=0,
+    )
 
     def __str__(self):
         return str(self.id)
+    
+    class Meta:
+        verbose_name = 'Товар в заказе'
+        verbose_name_plural = 'Товары в заказе'
 
     def get_cost(self):
-        return self.price * self.quantity    
-    
+        return self.price * self.quantity      
 
 
 class ProductInCart(models.Model):
