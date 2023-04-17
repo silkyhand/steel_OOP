@@ -8,12 +8,22 @@ User = get_user_model()
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders', null=True, blank=True)
-    customer_name = models.CharField('Имя', max_length=255)
-    customer_phone = models.CharField('Телефон', max_length=20)
-    customer_email = models.EmailField('Почта')    
+    name = models.CharField('Имя', max_length=255)
+    phone = models.CharField('Телефон', max_length=20)
+    email = models.EmailField('Почта')    
     comments = models.TextField('Комментарии', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    total_price = models.DecimalField(
+        'Общая стоимость товаров в заказе', 
+        max_digits=10, decimal_places=2, default=0,
+    )
+    total_weight = models.DecimalField(
+        'Общий вес товаров в заказе',
+        max_digits=10,
+        decimal_places=2,
+        default=0,        
+    )
     STATUS_CHOICES = (
         ('new', 'Новый'),
         ('in_progress', 'В обработке'),
@@ -27,8 +37,8 @@ class Order(models.Model):
     def __str__(self):
         return f'Заказ #{self.id}'
 
-    def get_total_cost(self):
-        return sum(item.get_cost() for item in self.items.all())
+    # def get_total_cost(self):
+    #     return sum(item.get_cost() for item in self.items.all())
     
     class Meta:
         verbose_name = 'Заказ'
@@ -40,14 +50,14 @@ class ProductInOrder(models.Model):
         Order,
         verbose_name='Заказ',
         on_delete=models.CASCADE,
-        related_name='items')
+        related_name='products')
     product = models.ForeignKey(Product,
                                 verbose_name='Товар в заказе',
                                 on_delete=models.CASCADE,
-                                related_name="order_items")    
+                                related_name="order_products")    
     nmb = models.PositiveIntegerField(default=1)
     weight_nmb = models.DecimalField(
-        'Общий вес товаров в корзине',
+        'Общий вес товара в корзине',
         max_digits=10,
         decimal_places=2,        
     )

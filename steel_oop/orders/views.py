@@ -5,14 +5,13 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from products.models import Product
 from .forms import OrderCreateForm
-from .models import ProductInCart, ProductInOrder
+from .models import Order, ProductInCart, ProductInOrder
 
 
 def cart_adding(request):
     return_dict = dict()
     session_key = request.session.session_key   
-    data = request.POST
-    print(data)
+    data = request.POST    
     product_id = data.get("product_id")
     nmb = data.get("nmb")    
    
@@ -21,7 +20,6 @@ def cart_adding(request):
         product_id=product_id,
         defaults={"nmb": nmb}        
     )
-
     if not created:        
         new_product.nmb += int(nmb)
         new_product.save(force_update=True)
@@ -82,52 +80,78 @@ def order_create(request):
     session_key = request.session.session_key
     if request.method == 'POST':
         form = OrderCreateForm(request.POST)
-        order = form.save(commit=False)
-        order.user = request.user
-        order.save()    
-        products_in_cart = ProductInCart.objects.filter(session_key=session_key, is_active=True, order__isnull=True)
-        print(products_in_cart)
-        for item in products_in_cart:
-            ProductInOrder.objects.create(
-                product=item.product, nmb=item.nmb,
-                price_per_item=item.price_per_item,
-                total_price=item.total_price,
-                order=order)
-            item.is_active = False
-            item.save()
-
-
-    form = CheckoutContactForm(request.POST or None)
-    if request.POST:
-        print(request.POST)
         if form.is_valid():
-            print("yes")
-            data = request.POST
-            name = data.get("name", "3423453")
-            phone = data["phone"]
-            user, created = User.objects.get_or_create(username=phone, defaults={"first_name": name})
+            order = form.save(commit=False)
+            order.user = request.user
+            order.save()    
+            products_in_cart = ProductInCart.objects.filter(session_key=session_key, is_active=True, order__isnull=True)
+            print(products_in_cart)
+            total_price = 0
+            total_weight = 0
+            for item in products_in_cart:
+                ProductInOrder.objects.create(
+                    product=item.product,
+                    nmb=item.nmb,
+                    price_per_item=item.price_per_item,
+                    total_price=item.total_price,
+                    weight_nmb=item.weight_nmb,
+                    order=order)
+                total_price += item.total_price  
+                total_weight += item.total_weight 
+                item.is_active = False
+                item.save()
+            order.total_price = total_price
+            order.total_weight = total_weight
+            order.save()     
+            messages.success(request, 'Заказ успешно создан.')
+            return redirect('orders:order_detail', order_id=order.id)        
+    else:
+        form = OrderCreateForm()
+    return render(request, 'orders/order_create.html', {'form': form})
 
-            order = Order.objects.create(user=user, customer_name=name, customer_phone=phone, status_id=1)
 
-            for name, value in data.items():
-                if name.startswith("product_in_basket_"):
-                    product_in_basket_id = name.split("product_in_basket_")[1]
-                    product_in_basket = ProductInBasket.objects.get(id=product_in_basket_id)
-                    print(type(value))
+def order_detail(request, order_id):
+    order = get_object_or_404(Order, pk=order_id) 
+    products_in_order = order.products.all()  
+    context = { 
+        "order": order,
+        "products_in_order": products_in_order, 
+    }     
+    return render(request, 'orders/order_detail.html', context)
 
-                    product_in_basket.nmb = value
-                    product_in_basket.order = order
-                    product_in_basket.save(force_update=True)
+         
 
-                    ProductInOrder.objects.create(product=product_in_basket.product, nmb = product_in_basket.nmb,
-                                                    price_per_item=product_in_basket.price_per_item,
-                                                    total_price = product_in_basket.total_price,
-                                                    order=order)
+    # form = CheckoutContactForm(request.POST or None)
+    # if request.POST:
+    #     print(request.POST)
+    #     if form.is_valid():
+    #         print("yes")
+    #         data = request.POST
+    #         name = data.get("name", "3423453")
+    #         phone = data["phone"]
+    #         user, created = User.objects.get_or_create(username=phone, defaults={"first_name": name})
 
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])
-        else:
-            print("no")
-    return render(request, 'orders/checkout.html', locals())
+    #         order = Order.objects.create(user=user, customer_name=name, customer_phone=phone, status_id=1)
+
+    #         for name, value in data.items():
+    #             if name.startswith("product_in_basket_"):
+    #                 product_in_basket_id = name.split("product_in_basket_")[1]
+    #                 product_in_basket = ProductInBasket.objects.get(id=product_in_basket_id)
+    #                 print(type(value))
+
+    #                 product_in_basket.nmb = value
+    #                 product_in_basket.order = order
+    #                 product_in_basket.save(force_update=True)
+
+    #                 ProductInOrder.objects.create(product=product_in_basket.product, nmb = product_in_basket.nmb,
+    #                                                 price_per_item=product_in_basket.price_per_item,
+    #                                                 total_price = product_in_basket.total_price,
+    #                                                 order=order)
+
+    #         return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    #     else:
+    #         print("no")
+    # return render(request, 'orders/checkout.html', locals())
 
 
 
