@@ -11,10 +11,10 @@ class UserAdmin(admin.ModelAdmin):
     add_form = CreationForm
     form = ChangeForm
     model = User
-    list_display = ('email', 'is_staff', 'is_active',)
+    list_display = ('email', 'username', 'is_staff', 'is_active',)
     list_filter = ('email', 'is_staff', 'is_active',)
     fieldsets = (
-        (None, {'fields': ('email',)}),
+        (None, {'fields': ('email', 'username')}),
         ('Permissions', {'fields': ('is_staff', 'is_active')}),
     )
     add_fieldsets = (

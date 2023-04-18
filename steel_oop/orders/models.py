@@ -35,10 +35,8 @@ class Order(models.Model):
                               default='new')
 
     def __str__(self):
-        return f'Заказ #{self.id}'
+        return f'Заказ №{self.id}'
 
-    # def get_total_cost(self):
-    #     return sum(item.get_cost() for item in self.items.all())
     
     class Meta:
         verbose_name = 'Заказ'

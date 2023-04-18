@@ -81,10 +81,14 @@ def order_create(request):
     if request.method == 'POST':
         form = OrderCreateForm(request.POST)
         if form.is_valid():
-            order = form.save(commit=False)
-            order.user = request.user
+            order = form.save(commit=False) 
+            if request.user.is_authenticated():           
+                order.name = request.user.username
+                order.email = request.user.email
+                r = order.email 
+                print(order.email)
             order.save()    
-            products_in_cart = ProductInCart.objects.filter(session_key=session_key, is_active=True, order__isnull=True)
+            products_in_cart = ProductInCart.objects.filter(session_key=session_key, is_active=True)
             print(products_in_cart)
             total_price = 0
             total_weight = 0
@@ -92,13 +96,13 @@ def order_create(request):
                 ProductInOrder.objects.create(
                     product=item.product,
                     nmb=item.nmb,
-                    price_per_item=item.price_per_item,
+                    price_item=item.price_item,
                     total_price=item.total_price,
                     weight_nmb=item.weight_nmb,
                     order=order)
                 total_price += item.total_price  
-                total_weight += item.total_weight 
-                item.is_active = False
+                total_weight += item.weight_nmb
+                # item.is_active = False
                 item.save()
             order.total_price = total_price
             order.total_weight = total_weight
@@ -107,7 +111,20 @@ def order_create(request):
             return redirect('orders:order_detail', order_id=order.id)        
     else:
         form = OrderCreateForm()
-    return render(request, 'orders/order_create.html', {'form': form})
+        total_price = 0
+        total_weight = 0
+        products_in_cart = ProductInCart.objects.filter(session_key=session_key, is_active=True)
+        for item in products_in_cart:
+            total_price += item.total_price  
+            total_weight += item.weight_nmb
+        context = {
+            'form': form,
+            'products_in_cart': products_in_cart,  
+            'total_price': total_price, 
+            'total_weight': total_weight,
+        }   
+
+    return render(request, 'orders/order_create.html', context)
 
 
 def order_detail(request, order_id):

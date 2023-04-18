@@ -4,27 +4,27 @@
     Заказ
 {% endblock %}
 {% block content %}
-  <div class="container" style="padding-top: 10rem">
+  <div class="container" style="padding-top: 10rem" >
     <div class="row">
-      <div class="col-lg-4"> 
-       Номер заказа {{ order.id }}
+      <div class="col-lg-4 text-lg-end"> 
+       <h5 class="text-decoration-underline">Номер заказа № {{ order.id }}</h5>
       </div>    
       <div class="col-lg-8">           
        <h3 class="text-center">Товары в заказе</h3>          
-          <table class="table table-striped table_boarded table-hover">
+          <table class="table table-light table-bordered">
             <thead>
-              <tr>
+              <tr class="table-success">
                 <th>Товар</th>                               
                 <th>Цена за ед.(м.п./шт.)</th>
-                <th>Количество</th>
-                <th>Вес</th>
-                <th>Сумма</th>                                              
+                <th>Количество м/шт</th>
+                <th>Вес кг</th>
+                <th>Сумма руб</th>                                              
               </tr>
             </thead>
             <tbody>
                 {% for product in products_in_order %}
                   <tr class="product-data-cart">
-                    <td class="text-center block-3" style="color:blue">                
+                    <td class="text-center block-3">                
                       {{ product.product.subcategory.name }}
                       {% if product.product.thickness %}
                          <p><small> {{ product.product.thickness }}</small></p> 
@@ -42,7 +42,13 @@
                 {% endfor %} 
             </tbody>
           </table>  
-          
+
+          <div class="text-end">
+            <b>Общий вес товаров </b>
+            <br>
+            <span id="total_order_weight">{{order.total_weight}} кг.</span>
+          </div> 
+          <p></p>          
           <div class="text-end">
             <b>Сумма заказа</b>
             <br>
