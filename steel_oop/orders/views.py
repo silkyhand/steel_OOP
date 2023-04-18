@@ -79,22 +79,19 @@ def cart_remove(request, product_id):
 def order_create(request):
     session_key = request.session.session_key
     if request.method == 'POST':
-        form = OrderCreateForm(request.POST)
+        form = OrderCreateForm(request.POST, request=request)
         if form.is_valid():
-            order = form.save(commit=False) 
-            if request.user.is_authenticated():           
-                order.name = request.user.username
-                order.email = request.user.email
-                r = order.email 
-                print(order.email)
+            order = form.save(commit=False)
+            if request.user.is_authenticated:
+                order.user = request.user
+                print(order.user)             
             order.save()    
-            products_in_cart = ProductInCart.objects.filter(session_key=session_key, is_active=True)
-            print(products_in_cart)
+            products_in_cart = ProductInCart.objects.filter(session_key=session_key, is_active=True)            
             total_price = 0
             total_weight = 0
             for item in products_in_cart:
                 ProductInOrder.objects.create(
-                    product=item.product,
+                    product=item.product, 
                     nmb=item.nmb,
                     price_item=item.price_item,
                     total_price=item.total_price,
@@ -110,7 +107,7 @@ def order_create(request):
             messages.success(request, 'Заказ успешно создан.')
             return redirect('orders:order_detail', order_id=order.id)        
     else:
-        form = OrderCreateForm()
+        form = OrderCreateForm(request=request)
         total_price = 0
         total_weight = 0
         products_in_cart = ProductInCart.objects.filter(session_key=session_key, is_active=True)

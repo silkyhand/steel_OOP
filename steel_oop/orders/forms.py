@@ -5,18 +5,26 @@ from .models import Order, ProductInOrder
 
 User = get_user_model()
 
+
 class OrderCreateForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['name', 'phone', 'email', 'comments']
+        fields = ['name', 'email', 'phone', 'comments']
 
     def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
         super().__init__(*args, **kwargs)
-        self.fields['name'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Имя'})
-        self.fields['phone'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Телефон'})
-        self.fields['email'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Email'})       
-        self.fields['comments'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Комментарий'})
-
+        if self.request and self.request.user.is_authenticated:
+            self.fields['name'].initial = self.request.user.username
+            self.fields['email'].initial = self.request.user.email
+            self.fields['phone'].widget.attrs.update({'placeholder': 'Телефон'})
+            self.fields['comments'].widget.attrs.update({'placeholder': 'Комментарий'})
+        else:    
+            self.fields['name'].widget.attrs.update({'placeholder': 'Имя'})            
+            self.fields['email'].widget.attrs.update({'placeholder': 'Email'}) 
+            self.fields['phone'].widget.attrs.update({'placeholder': 'Телефон'})      
+            self.fields['comments'].widget.attrs.update({'placeholder': 'Комментарий'})
+        
 
 
 # # PRODUCT_QUANTITY_CHOICES = [(i, str(i)) for i in range(1, 21)]

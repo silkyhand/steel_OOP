@@ -54,7 +54,7 @@
                   value="" oninput="validity.valid||(value='');">
                   <p class="text-center"><small style="color:blue">Вес ед. {{ product.weight_item|unlocalize }} кг.</small></p>
                 </td>
-                <td><a href="{% url 'orders:cart_adding' %}">
+                <td class="btn-wrap"><a href="{% url 'orders:cart_adding' %}">
                   <button class="btn btn-success btn-buy" type="submit" id="submit_btn"
                           data-product_id = "{{product.id}}"
                           data-name = "{{product.subcategory.name}}"
