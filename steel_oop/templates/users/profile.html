@@ -1,0 +1,21 @@
+{% extends 'base.html' %} 
+{% block title %}
+Профиль пользователя 
+{% endblock %} 
+{% block content %}
+<div class="container py-5" style="margin-top:5rem">
+  <div class="row">  
+    <div class="col-lg-6 col-lg-offset-2">
+      <p class="fw-bold">Имя: {{ buyer.username }}</p>
+      <p class="fw-bold">Email: {{ buyer.email }}</p>
+      <p><a href="{% url 'users:password_change' %}">Изменить пароль</a></p>
+    </div> 
+    <div class="col-lg-6 col-lg-offset-2">
+      </h4>Ваши заказы</>
+        {% for order in user_orders %}     
+          <a href="{% url 'orders:order_detail' order.id %}"></a> Заказ № {{ order.id }}
+          {% if not forloop.last %}<hr>{% endif %}
+          {% endfor %}    
+    </div>   
+{% endblock %}        
+        

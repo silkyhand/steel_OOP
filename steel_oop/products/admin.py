@@ -3,28 +3,6 @@ from django.contrib import admin
 from .models import Category, Product, Productlist, ProductNotlist, Subcategory
 
 
-# class SubCategoryListFilter(admin.SimpleListFilter):
-#     title = ('Категории товаров')
-#     parameter_name = 'subcategory'
-    
-#     def lookups(self, request, model_admin):
-#         (
-#             ('listovoy', ('листовой')),
-#             ('sortovoy', ('сортовой')),
-#             ('prokat_trub', ('прокат труб')),
-#         )
-
-#     def queryset(self, request, queryset):
-#         if self.value() == 'listovoy':
-#             return queryset.filter(category.slug == 'listovoy')               
-#             )
-#         if self.value() == '90s':
-#             return queryset.filter(
-#                 birthday__gte=date(1990, 1, 1),
-#                 birthday__lte=date(1999, 12, 31),
-#             )    
-
-
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name_cat', 'slug',)
@@ -38,11 +16,12 @@ class SubcategoryAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     list_filter = ('category',)    
     prepopulated_fields = {'slug': ('name',)}
-    
 
+       
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('subcategory', 'size', 'parameter', 'thickness', 'length', 'weight_item', 'area', 'price_tonn',
+    list_display = ('subcategory', 'size', 'parameter', 'thickness', 'length',
+                    'weight_item', 'area', 'price_tonn',
                     'price_item', 'coeff', 'base_price', 'discount',
                     )
     search_fields = ('size',)

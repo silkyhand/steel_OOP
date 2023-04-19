@@ -19,9 +19,9 @@
       <div class="col-sm-12 col-md-9">
         <h2>{{ subcategory.name }}</h2>                  
            
-        <table class="table table-striped table_boarded table-hover">        
+        <table class="table table-striped table-light table-bordered table-hover">        
           <thead>
-            <tr>
+            <tr class="table-success">
                 <th>Товар</th>
                 <th>Длина, м</th>
                 <th>Цена за тонну, р</th>
@@ -42,7 +42,7 @@
               </td>
               <td>{{ product.length }}</td>              
               <td>{{ product.price_tonn }}</td>
-              <td>{{ product.price_item|floatformat:0 }}</td>
+              <td>{{ product.price_item|floatformat:1 }}</td>
               <form class="product" id="form_buying_product" action="{% url 'orders:cart_adding' %}" method="post">{% csrf_token %}                               
                 <td>
                   <input type="number"  min="0" step ="1" 

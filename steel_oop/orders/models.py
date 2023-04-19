@@ -84,12 +84,12 @@ class ProductInCart(models.Model):
     session_key = models.CharField(max_length=128)
     product = models.ForeignKey(
         Product,
-        verbose_name='Товар в корзине',
+        verbose_name='Товар в машине',
         on_delete=models.CASCADE,
         related_name='productsincart')
     nmb = models.IntegerField('Количество', default=1)
     weight_nmb = models.DecimalField(
-        'Общий вес товаров в корзине',
+        'Общий вес товаров в машине',
         max_digits=10,
         decimal_places=2,        
     )
@@ -99,7 +99,7 @@ class ProductInCart(models.Model):
         decimal_places=1,
         default=0)
     total_price = models.DecimalField(
-        'Общая стоимость товара в корзине', 
+        'Общая стоимость товара в машине', 
         max_digits=10, decimal_places=2, default=0,
     )
     is_active = models.BooleanField(default=True)
@@ -113,8 +113,8 @@ class ProductInCart(models.Model):
         return f'{self.product.subcategory.name}\n {self.product.size}'
 
     class Meta:
-        verbose_name = 'Товар в корзине'
-        verbose_name_plural = 'Товары в корзине'
+        verbose_name = 'Товар в машине'
+        verbose_name_plural = 'Товары в машине'
 
     def save(self, *args, **kwargs):
         price_item = self.product.price_item

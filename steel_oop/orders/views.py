@@ -98,9 +98,9 @@ def order_create(request):
                     weight_nmb=item.weight_nmb,
                     order=order)
                 total_price += item.total_price  
-                total_weight += item.weight_nmb
-                # item.is_active = False
-                item.save()
+                total_weight += item.weight_nmb                
+                item.delete()
+
             order.total_price = total_price
             order.total_weight = total_weight
             order.save()     
@@ -133,7 +133,8 @@ def order_detail(request, order_id):
     }     
     return render(request, 'orders/order_detail.html', context)
 
-         
+
+        
 
     # form = CheckoutContactForm(request.POST or None)
     # if request.POST:
