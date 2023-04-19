@@ -21,7 +21,7 @@ class UserPasswordChangeView(SuccessMessageMixin, PasswordChangeView):
     Изменение пароля пользователя
     """
     form_class = UserPasswordChangeForm
-    template_name = 'modules/system/authenticated/password-change.html'
+    template_name = 'users/password_change.html'
     success_message = 'Ваш пароль был успешно изменён!'
 
     def get_context_data(self, **kwargs):
@@ -30,7 +30,7 @@ class UserPasswordChangeView(SuccessMessageMixin, PasswordChangeView):
         return context
 
     def get_success_url(self):
-        return reverse_lazy('users:profile', kwargs={'slug': self.request.user.username})    
+        return reverse_lazy('users:profile', kwargs={'username': self.request.user.username})    
 
 
 def profile(request, username):
