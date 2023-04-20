@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import UserChangeForm, UserCreationForm, SetPasswordForm
+from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 
 from .models import User
 
@@ -17,17 +17,17 @@ class ChangeForm(UserChangeForm):
         fields = ('email',)
 
 
-class UserPasswordChangeForm(SetPasswordForm):
-    """
-    Форма изменения пароля
-    """
-    def __init__(self, *args, **kwargs):
-        """
-        Обновление стилей формы
-        """
-        super().__init__(*args, **kwargs)
-        for field in self.fields:
-            self.fields[field].widget.attrs.update({
-                'class': 'form-control',
-                'autocomplete': 'off'
-            })
+# class UserPasswordChangeForm(SetPasswordForm):
+#     """
+#     Форма изменения пароля
+#     """
+#     def __init__(self, *args, **kwargs):
+#         """
+#         Обновление стилей формы
+#         """
+#         super().__init__(*args, **kwargs)
+#         for field in self.fields:
+#             self.fields[field].widget.attrs.update({
+#                 'class': 'form-control',
+#                 'autocomplete': 'off'
+#             })
