@@ -1,3 +1,9 @@
+from django.template.loader import get_template
+from django.core.mail import EmailMessage
+from django.conf import settings
+from django.http import HttpResponse
+from django.template import Context
+import weasyprint
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
@@ -132,6 +138,50 @@ def order_detail(request, order_id):
         "products_in_order": products_in_order, 
     }     
     return render(request, 'orders/order_detail.html', context)
+
+##
+def order_pdf_email(request, order_id):
+    """Преобразование заказа в PDF"""
+    # Get the Order object
+    order = get_object_or_404(Order, pk=order_id)
+    products_in_order = order.products.all()
+
+    # Render the HTML template
+    template = get_template('orders/order_detail.html')
+    context = {
+        'order': order,
+        'products_in_order': products_in_order,
+    }
+    html = template.render(context)
+
+    # Generate the PDF file object
+    pdf_file = render_to_pdf('orders/order_detail.html', context)
+
+    # Create the email message
+    subject = 'Your Order'
+    from_email = settings.DEFAULT_FROM_EMAIL
+    to_email = [order.email]
+    message = 'Thank you for your order! Please find your order details attached as a PDF file.'
+    email = EmailMessage(subject, message, from_email, to_email)
+    email.attach(f'order_{order.id}.pdf', pdf_file.getvalue(), 'application/pdf')
+
+    # Send the email
+    email.send()
+
+    # Return a response
+    response = HttpResponse(pdf_file, content_type='application/pdf')
+    response['Content-Disposition'] = f'filename=order_{order.id}.pdf'
+    return response
+
+def render_to_pdf(template_path, context):
+    # Render the HTML template
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # Create the PDF file object
+    pdf_file = weasyprint.HTML(string=html).write_pdf()
+    
+    return pdf_file
 
 
         

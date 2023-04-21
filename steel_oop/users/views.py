@@ -16,16 +16,6 @@ class SignUp(CreateView):
     form_class = CreationForm
     success_url = reverse_lazy('products:index')
     template_name = 'users/signup.html'
-
-
-class CustomPasswordChangeView(PasswordChangeView): 
-    success_url = reverse_lazy('products:index')
-
-    def form_valid(self, form):
-        form.save() 
-        messages.success(self.request, " Пароль успешно изменен.")
-        return super(PasswordChangeView, self).form_valid(form) 
-
     
 
 def profile(request, username):
