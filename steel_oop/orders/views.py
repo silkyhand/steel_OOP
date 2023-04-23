@@ -1,9 +1,9 @@
+import weasyprint
 from django.template.loader import get_template
 from django.core.mail import EmailMessage
 from django.conf import settings
 from django.http import HttpResponse
 from django.template import Context
-import weasyprint
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
@@ -89,8 +89,7 @@ def order_create(request):
         if form.is_valid():
             order = form.save(commit=False)
             if request.user.is_authenticated:
-                order.user = request.user
-                print(order.user)             
+                order.user = request.user                           
             order.save()    
             products_in_cart = ProductInCart.objects.filter(session_key=session_key, is_active=True)            
             total_price = 0
@@ -106,11 +105,11 @@ def order_create(request):
                 total_price += item.total_price  
                 total_weight += item.weight_nmb                
                 item.delete()
-
             order.total_price = total_price
-            order.total_weight = total_weight
-            order.save()     
-            messages.success(request, 'Заказ успешно создан.')
+            order.total_weight = total_weight            
+            order.save() 
+            order_pdf_email(request, order.id)    
+            messages.success(request, 'Заказ успешно создан.')            
             return redirect('orders:order_detail', order_id=order.id)        
     else:
         form = OrderCreateForm(request=request)
@@ -139,7 +138,7 @@ def order_detail(request, order_id):
     }     
     return render(request, 'orders/order_detail.html', context)
 
-##
+
 def order_pdf_email(request, order_id):
     """Преобразование заказа в PDF"""
     # Get the Order object
@@ -163,7 +162,7 @@ def order_pdf_email(request, order_id):
     to_email = [order.email]
     message = 'Thank you for your order! Please find your order details attached as a PDF file.'
     email = EmailMessage(subject, message, from_email, to_email)
-    email.attach(f'order_{order.id}.pdf', pdf_file.getvalue(), 'application/pdf')
+    email.attach(f'order_{order.id}.pdf', pdf_file, 'application/pdf')
 
     # Send the email
     email.send()
@@ -172,6 +171,7 @@ def order_pdf_email(request, order_id):
     response = HttpResponse(pdf_file, content_type='application/pdf')
     response['Content-Disposition'] = f'filename=order_{order.id}.pdf'
     return response
+
 
 def render_to_pdf(template_path, context):
     # Render the HTML template
@@ -186,66 +186,66 @@ def render_to_pdf(template_path, context):
 
         
 
-    # form = CheckoutContactForm(request.POST or None)
-    # if request.POST:
-    #     print(request.POST)
-    #     if form.is_valid():
-    #         print("yes")
-    #         data = request.POST
-    #         name = data.get("name", "3423453")
-    #         phone = data["phone"]
-    #         user, created = User.objects.get_or_create(username=phone, defaults={"first_name": name})
+#     # form = CheckoutContactForm(request.POST or None)
+#     # if request.POST:
+#     #     print(request.POST)
+#     #     if form.is_valid():
+#     #         print("yes")
+#     #         data = request.POST
+#     #         name = data.get("name", "3423453")
+#     #         phone = data["phone"]
+#     #         user, created = User.objects.get_or_create(username=phone, defaults={"first_name": name})
 
-    #         order = Order.objects.create(user=user, customer_name=name, customer_phone=phone, status_id=1)
+#     #         order = Order.objects.create(user=user, customer_name=name, customer_phone=phone, status_id=1)
 
-    #         for name, value in data.items():
-    #             if name.startswith("product_in_basket_"):
-    #                 product_in_basket_id = name.split("product_in_basket_")[1]
-    #                 product_in_basket = ProductInBasket.objects.get(id=product_in_basket_id)
-    #                 print(type(value))
+#     #         for name, value in data.items():
+#     #             if name.startswith("product_in_basket_"):
+#     #                 product_in_basket_id = name.split("product_in_basket_")[1]
+#     #                 product_in_basket = ProductInBasket.objects.get(id=product_in_basket_id)
+#     #                 print(type(value))
 
-    #                 product_in_basket.nmb = value
-    #                 product_in_basket.order = order
-    #                 product_in_basket.save(force_update=True)
+#     #                 product_in_basket.nmb = value
+#     #                 product_in_basket.order = order
+#     #                 product_in_basket.save(force_update=True)
 
-    #                 ProductInOrder.objects.create(product=product_in_basket.product, nmb = product_in_basket.nmb,
-    #                                                 price_per_item=product_in_basket.price_per_item,
-    #                                                 total_price = product_in_basket.total_price,
-    #                                                 order=order)
+#     #                 ProductInOrder.objects.create(product=product_in_basket.product, nmb = product_in_basket.nmb,
+#     #                                                 price_per_item=product_in_basket.price_per_item,
+#     #                                                 total_price = product_in_basket.total_price,
+#     #                                                 order=order)
 
-    #         return HttpResponseRedirect(request.META['HTTP_REFERER'])
-    #     else:
-    #         print("no")
-    # return render(request, 'orders/checkout.html', locals())
-
-
-
-# @require_POST
-# def cart_add(request, product_id):
-#     cart = Cart(request)
-#     product = get_object_or_404(Product, id=product_id)
-#     length = product.length
-#     form = CartAddProductForm(request.POST, length=length)
-#     if form.is_valid():
-#         cd = form.cleaned_data
-#         cart.add(product=product,
-#                  quantity=cd['quantity'],
-#                  update_quantity=cd['update'],                 
-#                  unit=cd['unit'],
-#                 )
-#     return redirect('orders:cart_detail')
-    # else:
-    #     print(form.errors)
-    # return render(request, 'orders:cart_add', {'product_id': product_id})
+#     #         return HttpResponseRedirect(request.META['HTTP_REFERER'])
+#     #     else:
+#     #         print("no")
+#     # return render(request, 'orders/checkout.html', locals())
 
 
-# def cart_remove(request, product_id):
-#     cart = Cart(request)
-#     product = get_object_or_404(Product, id=product_id)
-#     cart.remove(product)
-#     return redirect('orders:cart_detail')
+
+# # @require_POST
+# # def cart_add(request, product_id):
+# #     cart = Cart(request)
+# #     product = get_object_or_404(Product, id=product_id)
+# #     length = product.length
+# #     form = CartAddProductForm(request.POST, length=length)
+# #     if form.is_valid():
+# #         cd = form.cleaned_data
+# #         cart.add(product=product,
+# #                  quantity=cd['quantity'],
+# #                  update_quantity=cd['update'],                 
+# #                  unit=cd['unit'],
+# #                 )
+# #     return redirect('orders:cart_detail')
+#     # else:
+#     #     print(form.errors)
+#     # return render(request, 'orders:cart_add', {'product_id': product_id})
 
 
-# def cart_detail(request):
-#     cart = Cart(request)
-#     return render(request, 'cart/cart_detail.html', {'cart': cart})
+# # def cart_remove(request, product_id):
+# #     cart = Cart(request)
+# #     product = get_object_or_404(Product, id=product_id)
+# #     cart.remove(product)
+# #     return redirect('orders:cart_detail')
+
+
+# # def cart_detail(request):
+# #     cart = Cart(request)
+# #     return render(request, 'cart/cart_detail.html', {'cart': cart})

@@ -11,9 +11,9 @@
       <p><a href="{% url 'users:password_change' %}">Изменить пароль</a></p>
     </div> 
     <div class="col-lg-6 col-lg-offset-2">
-      </h4>Ваши заказы</>
-        {% for order in user_orders %}     
-          <a href="{% url 'orders:order_detail' order.id %}"></a> Заказ № {{ order.id }}
+      <h4>Ваши заказы</h4>
+        {% for order in user_orders %}
+          <a href="{% url 'orders:order_detail' order.id %}"> Заказ № {{ order.id }}</a>
           {% if not forloop.last %}<hr>{% endif %}
           {% endfor %}    
     </div>   
