@@ -25,9 +25,10 @@ SECRET_KEY = 'g)^yfz&$n(enlidb-iyth78pz-atu3co!p_11%#i!40**t$po6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
-
+ALLOWED_HOSTS = [
+    'www.misologos.pythonanywhere.com',
+    'misologos.pythonanywhere.com',
+] 
 # Application definition
 
 INSTALLED_APPS = [
