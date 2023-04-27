@@ -26,6 +26,8 @@ SECRET_KEY = 'g)^yfz&$n(enlidb-iyth78pz-atu3co!p_11%#i!40**t$po6'
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
     'www.misologos.pythonanywhere.com',
     'misologos.pythonanywhere.com',
 ] 
@@ -130,6 +132,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+
 
 AUTH_USER_MODEL = 'users.User'
 

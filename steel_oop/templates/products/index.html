@@ -9,22 +9,22 @@
 </header>
 {% endblock %}
 {% block content %}
-<div class="container py-5">
-  <div class="row">
-   {% for cat in category %}          
-    <div class="col-sm-4">
-     <div class="card">    
-       <div class="card-body">
-        <h5 class="card-title">{{ cat.name_cat }}</h5>               
-         <ul class="list-group list-group-flush">
-          {% for sub in cat.subcategories.all %}
-          <li class="list-group-item"><a href="{% url 'products:products_list' sub.slug %}" class="card-link">{{sub.name}}</a></li>          
-          {% endfor %}         
-        </ul>         
-       </div>
-      </div>
-    </div>
-    {% endfor %}       
-  </div>   
+<div class="col-xs-8 col-xs-offset-2 well">
+  <table class="table  table-light table-scroll table-striped table-hover">    
+    <thead>
+      <tr>
+        <th>Категория товаров</th>        
+      </tr>
+    </thead>
+    <tbody>
+      {% for sub in subcategories %}
+      <tr>
+        <td class="text-center block-3">
+          <a href="{% url 'products:products_list' sub.slug %}" class="list-group-item list-group-item-action active">{{sub.name}}</a>
+        </td>  
+      </tr>  
+      {% endfor %}  
+    </tbody> 
+  </table>   
 </div>
 {% endblock %}

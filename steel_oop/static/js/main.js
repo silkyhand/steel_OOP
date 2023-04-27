@@ -35,9 +35,7 @@ $(document).ready(function(){
     })
 });  
 
-$(document).ready(function(){    
-    $('.header').height($(window).height());
-    
+$(document).ready(function(){       
     var timeout = null;
     
     $('.product-number, .product-weight').on('keyup', function() {

@@ -5,9 +5,9 @@ from products.models import Category, Product, Subcategory
 
 
 def index(request):
-    category = Category.objects.prefetch_related('subcategories').all()
+    subcategories = Subcategory.objects.all()
     context = {
-        'category': category,       
+        'subcategories': subcategories,       
     }   
   
     return render(request, 'products/index.html', context)
