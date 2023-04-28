@@ -3,28 +3,30 @@
 {% block title %}
   Конструктор стали 
 {% endblock %}
-{% block header %}
-<header class="header gradient">      
-  {% include 'includes/header.html' %}
-</header>
-{% endblock %}
 {% block content %}
-<div class="col-xs-8 col-xs-offset-2 well">
-  <table class="table  table-light table-scroll table-striped table-hover">    
-    <thead>
-      <tr>
-        <th>Категория товаров</th>        
-      </tr>
-    </thead>
-    <tbody>
-      {% for sub in subcategories %}
-      <tr>
-        <td class="text-center block-3">
-          <a href="{% url 'products:products_list' sub.slug %}" class="list-group-item list-group-item-action active">{{sub.name}}</a>
-        </td>  
-      </tr>  
-      {% endfor %}  
-    </tbody> 
-  </table>   
-</div>
+<div class="row" style="margin-top: 10rem">  
+    <div class="card" style="width:35rem;">
+      <div class="card-body">
+        <div class="col-xs-8 col-xs-offset-2>
+          <table class="table  table-light table-scroll table-striped table-hover">    
+            <thead>
+              <tr>
+                <th class="text-center" >Категория товаров</th>        
+              </tr>
+            </thead>
+            <tbody>
+              {% for sub in subcategories %}
+              <tr>
+                <td class="text-center block-3">
+                  <a href="{% url 'products:products_list' sub.slug %}" class="list-group-item list-group-item-action active">{{sub.name}}</a>
+                </td>  
+              </tr>  
+              {% endfor %}  
+            </tbody> 
+          </table>   
+        </div>
+      </div>  
+    </div>
+  
+</div>  
 {% endblock %}
