@@ -1,11 +1,12 @@
 from django.views.generic import ListView
+from django.db.models.functions import Lower
 from django.shortcuts import get_object_or_404, render
 
 from products.models import Category, Product, Subcategory
 
 
 def index(request):
-    subcategories = Subcategory.objects.all()
+    subcategories = Subcategory.objects.all().order_by(Lower('name'))
     context = {
         'subcategories': subcategories,       
     }   

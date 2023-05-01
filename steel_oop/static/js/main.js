@@ -119,3 +119,20 @@ $(document).ready(function(){
 
    
 });    
+
+
+$(document).ready(function () {
+    // $('.subcategory-list').scrollbar();
+
+    $('#subcategory-search-input').on('input', function () {
+        var searchValue = $(this).val().toLowerCase();
+        $('.subcategory-list li').each(function () {
+            var text = $(this).text().toLowerCase();
+            if (text.indexOf(searchValue) >= 0) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
+});
