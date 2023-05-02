@@ -36,12 +36,19 @@ class Order(models.Model):
 
     def __str__(self):
         return f'Заказ №{self.id}'
-
     
     class Meta:
         verbose_name = 'Заказ'
-        verbose_name_plural = 'Заказы' 
-    
+        verbose_name_plural = 'Заказы'
+
+    def save(self, *args, **kwargs):
+        if self.user:
+            total_price = round(((self.total_price * (100 - self.user.user_discount)) / 100), 1) 
+            self.total_price = total_price
+        else:
+            self.total_price = self.total_price         
+        super(Order, self).save(*args, **kwargs)
+
 
 class ProductInOrder(models.Model):
     order = models.ForeignKey(

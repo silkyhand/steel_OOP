@@ -5,8 +5,9 @@ from .models import Category, Product, Productlist, ProductNotlist, Subcategory
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name_cat', 'slug',)
+    list_display = ('name_cat', 'slug', 'discount',)
     search_fields = ('name_cat',)
+    list_editable = ('discount',)
     prepopulated_fields = {'slug': ('name_cat',)}
 
 
@@ -22,17 +23,17 @@ class SubcategoryAdmin(admin.ModelAdmin):
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('subcategory', 'size', 'parameter', 'thickness', 'length',
                     'weight_item', 'area', 'price_tonn',
-                    'price_item', 'coeff', 'base_price', 'discount',
+                    'price_item', 'coeff', 'base_price', 
                     )
     search_fields = ('size',)
     list_filter = (('subcategory', admin.RelatedOnlyFieldListFilter),
                    )
-    list_editable = ('base_price', 'discount',)
+    list_editable = ('base_price',)
 
     fieldsets = (
       ('Общие данные', {
           'fields': ('subcategory', 'size', 'parameter', 'thickness', 'length', 'area',
-                     'coeff', 'base_price', 'discount'
+                     'coeff', 'base_price',
                     )
       }),
       ('Рассчитываемы данные', {
@@ -52,12 +53,12 @@ class ProductAdmin(admin.ModelAdmin):
 @admin.register(Productlist)
 class ProductListAdmin(admin.ModelAdmin):
     list_display = ('subcategory', 'thickness', 'size', 'weight_item', 'area', 'price_tonn',
-                    'price_item', 'coeff', 'base_price', 'discount',
+                    'price_item', 'coeff', 'base_price',
                     )
     search_fields = ('thickness',)
     list_filter = (('subcategory', admin.RelatedOnlyFieldListFilter),
                    )
-    list_editable = ('base_price', 'discount',)
+    list_editable = ('base_price',)
 
     def get_queryset(self, request):
         return Productlist.objects.exclude(thickness__isnull=True)
@@ -65,7 +66,7 @@ class ProductListAdmin(admin.ModelAdmin):
     fieldsets = (
       ('Общие данные', {
           'fields': ('subcategory', 'thickness', 'size', 'area',
-                     'coeff', 'base_price', 'discount'
+                     'coeff', 'base_price',
                     )
       }),
       ('Рассчитываемы данные', {
@@ -77,12 +78,12 @@ class ProductListAdmin(admin.ModelAdmin):
 @admin.register(ProductNotlist)
 class ProductNotListAdmin(admin.ModelAdmin):
     list_display = ('subcategory', 'size', 'parameter', 'length', 'weight_item', 'price_tonn',
-                    'price_item', 'coeff', 'base_price', 'discount',
+                    'price_item', 'coeff', 'base_price',
                     )
     search_fields = ('size',)
     list_filter = (('subcategory', admin.RelatedOnlyFieldListFilter),
                    )
-    list_editable = ('base_price', 'discount',)
+    list_editable = ('base_price',)
 
     def get_queryset(self, request):
         return Productlist.objects.exclude(thickness__isnull=False)
@@ -90,7 +91,7 @@ class ProductNotListAdmin(admin.ModelAdmin):
     fieldsets = (
       ('Общие данные', {
           'fields': ('subcategory', 'size','parameter','length',    
-                     'coeff', 'base_price', 'discount',
+                     'coeff', 'base_price',
                     )
       }),
       ('Рассчитываемы данные', {

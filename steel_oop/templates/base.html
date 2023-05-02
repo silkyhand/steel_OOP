@@ -16,16 +16,14 @@
       {% block title %}        
       {% endblock %}
     </title>
-  </head>  
+  </head> 
+  <header> 
+  </header>  
   <body>   
     <nav class="navbar fixed-top navbar-shop">
       {% include 'includes/nav.html' %} 
-    </nav>     
-    <header> 
-      {%block header%}
-      {% endblock %}     
-    </header>    
-    <main>
+    </nav>    
+    <main style="margin-top: 3rem"> 
       {% block content %}        
       {% endblock %} 
     </main>        

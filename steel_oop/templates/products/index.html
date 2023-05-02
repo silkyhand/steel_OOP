@@ -4,13 +4,11 @@
   Конструктор стали 
 {% endblock %}
 {% block content %}
-<div class="subcategory-list-container" style = "margin-top: 3rem">
+<div class="subcategory-list-container">
   <form id="subcategory-search-form">
       <input type="text" id="subcategory-search-input" placeholder="Найти категорию">
   </form>
-  <p>
-  <h3>Категории товаров</h3>
-  </p>
+    <h3 class="text-success">Категории товаров</h3>
   <div class="subcategory-list">
     <ul class="list-group">
       {% for subcategory in subcategories %}

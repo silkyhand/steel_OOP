@@ -9,6 +9,7 @@ User = get_user_model()
 class Category(models.Model):
     name_cat = models.CharField('Группа товаров', max_length=250)
     slug = models.SlugField(max_length=50, unique=True)
+    discount = models.IntegerField('Скидка в процентах', blank=True, default=0)
 
     def get_absolute_url(self):
         return reverse('products:products_category', args=[self.slug])
@@ -79,8 +80,7 @@ class Product(models.Model):
         'Цена за ед.(п/м или шт.)', 
         max_digits=7,
         decimal_places=1,
-        default=0)
-    discount = models.IntegerField('Скидка в процентах', blank=True, default=0)
+        default=0)    
 
     def __str__(self):
         return self.subcategory.name
@@ -95,8 +95,9 @@ class Product(models.Model):
     
     def save(self, *args, **kwargs):
         "Расчитать вес, стоимость тонны и погонного метра единицы товара"
+        discount = self.subcategory.category.discount
         self.weight_item = (self.length / self.coeff) * 1000        
-        self.price_tonn = round(((self.base_price/100) * (100 - self.discount)) / 100) * 100
+        self.price_tonn = round(((self.base_price/100) * (100 - discount)) / 100) * 100
         if self.subcategory.category.slug == 'listovoy':
             self.price_item = round(self.price_tonn / self.coeff / 100) * 100
         else:    
