@@ -20,6 +20,8 @@ class ProductInOrderInline(admin.TabularInline):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = [field.name for field in Order._meta.fields]
+    list_filter = ('status',)  
+    search_fields = ('user',)
     inlines = [ProductInOrderInline]
 
 

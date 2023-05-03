@@ -94,23 +94,26 @@ def order_create(request):
             products_in_cart = ProductInCart.objects.filter(session_key=session_key, is_active=True)            
             total_price = 0
             total_weight = 0
-            for item in products_in_cart:
-                ProductInOrder.objects.create(
-                    product=item.product, 
-                    nmb=item.nmb,
-                    price_item=item.price_item,
-                    total_price=item.total_price,
-                    weight_nmb=item.weight_nmb,
-                    order=order)
-                total_price += item.total_price  
-                total_weight += item.weight_nmb                
-                item.delete()
-            order.total_price = total_price
-            order.total_weight = total_weight            
-            order.save() 
-            order_pdf_email(request, order.id)    
-            messages.success(request, 'Заказ успешно создан.')            
-            return redirect('orders:order_detail', order_id=order.id)        
+            if products_in_cart.exists():
+                for item in products_in_cart:
+                    ProductInOrder.objects.create(
+                        product=item.product, 
+                        nmb=item.nmb,
+                        price_item=item.price_item,
+                        total_price=item.total_price,
+                        weight_nmb=item.weight_nmb,
+                        order=order)
+                    total_price += item.total_price  
+                    total_weight += item.weight_nmb                
+                    item.delete()
+                order.total_price = total_price
+                order.total_weight = total_weight            
+                order.save() 
+                order_pdf_email(request, order.id)    
+                messages.success(request, 'Заказ успешно создан.')            
+                return redirect('orders:order_detail', order_id=order.id)
+            else:
+                return HttpResponse("В машине нет товаров")        
     else:
         form = OrderCreateForm(request=request)
         total_price = 0

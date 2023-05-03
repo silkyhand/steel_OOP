@@ -48,11 +48,21 @@
             <br>
             <span id="total_order_weight">{{order.total_weight}} кг.</span>
           </div> 
-          <p></p>          
+          <p></p> 
+          <div class="text-end">
+            {% if user.is_authenticated %}
+              <b>Ваша скидка: {{ user.user_discount }}%</b>
+            {% else %} 
+              <b>Ваша скидка: 0%</b>
+            {% endif %}               
+          </div>
+          <br>           
           <div class="text-end">
             <b>Сумма заказа</b>
             <br>
-            <span id="total_cart_price">{{order.total_price}} руб.</span>
+            <b>(с учетом скидки</b>)
+            <br>
+            <span id="total_cart_price">{{ order.total_price }} руб.</span>
           </div> 
           <hr>        
         

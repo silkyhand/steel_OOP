@@ -12,7 +12,7 @@ class UserAdmin(admin.ModelAdmin):
     form = ChangeForm
     model = User
     list_display = ('email', 'username', 'user_discount', 'is_staff', 'is_active',)
-    list_filter = ('email', 'is_staff', 'is_active',)
+    list_filter = ('is_staff', 'is_active',)
     list_editable = ('user_discount',)
     fieldsets = (
         (None, {'fields': ('email', 'username', 'user_discount',)}),

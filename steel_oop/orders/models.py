@@ -42,9 +42,10 @@ class Order(models.Model):
         verbose_name_plural = 'Заказы'
 
     def save(self, *args, **kwargs):
-        if self.user:
-            total_price = round(((self.total_price * (100 - self.user.user_discount)) / 100), 1) 
-            self.total_price = total_price
+        if self.user:            
+            discount_price = round(((self.total_price * (100 - self.user.user_discount)) / 100), 1)             
+            self.total_price = discount_price 
+            print(self.total_price)
         else:
             self.total_price = self.total_price         
         super(Order, self).save(*args, **kwargs)
