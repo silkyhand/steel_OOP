@@ -8,44 +8,46 @@
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2">    
        <h3 class="text-center">Товары в машине</h3>       
-        <form id="form_update_cart" action="{% url 'orders:cart_update' %}" method="post">{% csrf_token %} 
-          <table class="table table-striped table-bordered table-hover">
-            <thead>
-              <tr class="table-success">
-                <th>Товар</th>                               
-                <th>Цена за ед.(м.п./шт.)</th>
-                <th>Количество</th>
-                <th>Вес</th>
-                <th>Сумма</th>   
-                <th>Удалить</th>                              
-              </tr>
-            </thead>
-            <tbody>
-                {% for product in products_in_cart %}
-                  <tr class="product-data-cart">
-                    <td class="text-center block-3" style="color:blue">                
-                      {{ product.product.subcategory.name }}
-                      {% if product.product.thickness %}
-                         <p><small> {{ product.product.thickness }}</small></p> 
-                      {% else %}
-                         <p><small>длина {{ product.product.length }}</small></p>   
-                      {% endif %}                    
-                    </td>
-                    <td>{{ product.price_item|floatformat:1 }}</td>              
-                    <td>
-                      <input type="number" value="{{ product.nmb }}"
-                      min="0" step ="1" class="product-number-cart form-control" 
-                      id="quantity-cart" name="nmb_{{ product.id }}" 
-                      aria-label="quantity"
-                      data-len="{{ product.product.length }}" oninput="validity.valid||(value='');">
-                    </td>       
-                    <td>{{ product.weight_nmb|floatformat:0 }}</td>
-                    <td>{{ product.total_price }}</td>              
-                    <td><a href="{% url 'orders:cart_remove' product.id %}">Удалить</a></td>                
-                  </tr>
-                {% endfor %} 
-            </tbody>
-          </table> 
+        <form id="form_update_cart" action="{% url 'orders:cart_update' %}" method="post">{% csrf_token %}           
+          <div class="table-responsive"> 
+            <table class="table table-striped table-bordered table-hover">
+              <thead>
+                <tr class="table-success">
+                  <th>Товар</th>                               
+                  <th>Цена за ед.(м.п./шт.)</th>
+                  <th>Количество</th>
+                  <th>Вес</th>
+                  <th>Сумма</th>   
+                  <th>Удалить</th>                              
+                </tr>
+              </thead>
+              <tbody>
+                  {% for product in products_in_cart %}
+                    <tr class="product-data-cart">
+                      <td class="text-center block-3" style="color:blue">                
+                        {{ product.product.subcategory.name }}
+                        {% if product.product.thickness %}
+                          <p><small> {{ product.product.thickness }}</small></p> 
+                        {% else %}
+                          <p><small>длина {{ product.product.length }}</small></p>   
+                        {% endif %}                    
+                      </td>
+                      <td>{{ product.price_item|floatformat:1 }}</td>              
+                      <td>
+                        <input type="number" value="{{ product.nmb }}"
+                        min="0" step ="1" class="product-number-cart form-control" 
+                        id="quantity-cart" name="nmb_{{ product.id }}" 
+                        aria-label="quantity"
+                        data-len="{{ product.product.length }}" oninput="validity.valid||(value='');">
+                      </td>       
+                      <td>{{ product.weight_nmb|floatformat:0 }}</td>
+                      <td>{{ product.total_price }}</td>              
+                      <td><a href="{% url 'orders:cart_remove' product.id %}">Удалить</a></td>                
+                    </tr>
+                  {% endfor %} 
+              </tbody>
+            </table> 
+          </div>
           <div class="text-end">
             <button class="btn btn-warning" type="submit" id="cart_update">Обновить товары</button>           
           </div> 

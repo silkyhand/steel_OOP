@@ -1,4 +1,5 @@
 from django.contrib import admin
+from adminsortable.admin import SortableAdmin
 
 from .models import Category, Product, Productlist, ProductNotlist, Subcategory
 
@@ -20,7 +21,7 @@ class SubcategoryAdmin(admin.ModelAdmin):
 
        
 @admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(SortableAdmin):
     list_display = ('subcategory', 'size', 'parameter', 'thickness', 'length',
                     'weight_item', 'area', 'price_tonn',
                     'price_item', 'coeff', 'base_price', 
@@ -51,7 +52,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 @admin.register(Productlist)
-class ProductListAdmin(admin.ModelAdmin):
+class ProductListAdmin(SortableAdmin):
     list_display = ('subcategory', 'thickness', 'size', 'weight_item', 'area', 'price_tonn',
                     'price_item', 'coeff', 'base_price',
                     )
@@ -76,7 +77,7 @@ class ProductListAdmin(admin.ModelAdmin):
 
 
 @admin.register(ProductNotlist)
-class ProductNotListAdmin(admin.ModelAdmin):
+class ProductNotListAdmin(SortableAdmin):
     list_display = ('subcategory', 'size', 'parameter', 'length', 'weight_item', 'price_tonn',
                     'price_item', 'coeff', 'base_price',
                     )

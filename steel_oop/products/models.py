@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.shortcuts import reverse
+from adminsortable.models import Sortable
 
 User = get_user_model()
 
@@ -46,7 +47,7 @@ class Subcategory(models.Model):
         verbose_name_plural = 'Категории товаров'
 
 
-class Product(models.Model):
+class Product(Sortable):
     size = models.CharField('Размер', max_length=50)
     parameter = models.CharField('Параметры, марка стали', max_length=50, null=True, blank=True)
     thickness = models.CharField('Толщина', max_length=50, null=True, blank=True)
@@ -88,8 +89,7 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse('products:product_detail', kwargs={'product_id': self.pk})
     
-    class Meta:
-        ordering = ['-base_price']
+    class Meta(Sortable.Meta):        
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'    
     

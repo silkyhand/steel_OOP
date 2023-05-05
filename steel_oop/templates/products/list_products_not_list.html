@@ -18,56 +18,57 @@
       </div>
       <div class="col-sm-12 col-md-9">
         <h2>{{ subcategory.name }}</h2>                  
-           
-        <table class="table table-striped table-light table-bordered table-hover">        
-          <thead>
-            <tr class="table-success">
-                <th>Товар</th>
-                <th>Длина, м</th>
-                <th>Цена за тонну, р</th>
-                <th>Цена за метр, р</th>
-                <th>Метраж, м</th>
-                <th>Вес, кг</th>
-                <th>Купить</th>                                
-            </tr>
-            </thead>      
-            <tbody>            
-            {% for product in products_list %}            
-            <tr class ="product-data" >
-              <td class="text-center block-3">
-                <a href="{% url 'products:product_detail' product.id %}">
-                {{ product.subcategory.name }}
-                <small class="length-info">{{product.size}}</small>
-                </a>
-              </td>
-              <td>{{ product.length }}</td>              
-              <td>{{ product.price_tonn }}</td>
-              <td>{{ product.price_item|floatformat:1 }}</td>
-              <form class="product" id="form_buying_product" action="{% url 'orders:cart_adding' %}" method="post">{% csrf_token %}                               
-                <td>
-                  <input type="number"  min="0" step ="1" 
-                    class="product-number form-control" id="quantity"
-                    aria-label="product-number"  data-length="{{ product.length }}" 
-                    data-weight="{{ product.weight_item|unlocalize }}" oninput="validity.valid||(value='');">
-                </td>  
-                <td id="weight-item"><input type="number" min="0" 
-                    class="product-weight form-control" id="weight" aria-label="product-weight"
-                    data-length="{{ product.length }}" data-weight="{{ product.weight_item|unlocalize }}"
-                    value="" oninput="validity.valid||(value='');">
-                    <p class="text-center"><small style="color:blue">Вес ед. {{ product.weight_item|unlocalize }} кг.</small></p>
+        <div class="table-responsive">    
+          <table class="table table-striped table-light table-bordered table-hover">        
+            <thead>
+              <tr class="table-success">
+                  <th>Товар</th>
+                  <th>Длина, м</th>
+                  <th>Цена за тонну, р</th>
+                  <th>Цена за метр, р</th>
+                  <th>Метраж, м</th>
+                  <th>Вес, кг</th>
+                  <th>Купить</th>                                
+              </tr>
+              </thead>      
+              <tbody>            
+              {% for product in products_list %}            
+              <tr class ="product-data" >
+                <td class="text-center block-3">
+                  <a href="{% url 'products:product_detail' product.id %}">
+                  {{ product.subcategory.name }}
+                  <small class="length-info">{{product.size}}</small>
+                  </a>
                 </td>
-                <td class="btn-wrap"><a href="{% url 'orders:cart_adding' %}">
-                    <button class="btn btn-success btn-buy" type="submit" id="submit_btn"
-                            data-product_id = "{{product.id}}"
-                            data-name = "{{product.subcategory.name}}"
-                            data-action = "{% url 'orders:cart_adding' %}"
-                    >В машину</button></a>                   
-                </td> 
-              </form>                              
-            </tr>                          
-           {% endfor %}                  
-           </tbody>                      
-        </table>           
+                <td>{{ product.length }}</td>              
+                <td>{{ product.price_tonn }}</td>
+                <td>{{ product.price_item|floatformat:1 }}</td>
+                <form class="product" id="form_buying_product" action="{% url 'orders:cart_adding' %}" method="post">{% csrf_token %}                               
+                  <td>
+                    <input type="number"  min="0" step ="1" 
+                      class="product-number form-control" id="quantity"
+                      aria-label="product-number"  data-length="{{ product.length }}" 
+                      data-weight="{{ product.weight_item|unlocalize }}" oninput="validity.valid||(value='');">
+                  </td>  
+                  <td id="weight-item"><input type="number" min="0" 
+                      class="product-weight form-control" id="weight" aria-label="product-weight"
+                      data-length="{{ product.length }}" data-weight="{{ product.weight_item|unlocalize }}"
+                      value="" oninput="validity.valid||(value='');">
+                      <p class="text-center"><small style="color:blue">Вес ед. {{ product.weight_item|unlocalize }} кг.</small></p>
+                  </td>
+                  <td class="btn-wrap"><a href="{% url 'orders:cart_adding' %}">
+                      <button class="btn btn-success btn-buy" type="submit" id="submit_btn"
+                              data-product_id = "{{product.id}}"
+                              data-name = "{{product.subcategory.name}}"
+                              data-action = "{% url 'orders:cart_adding' %}"
+                      >В машину</button></a>                   
+                  </td> 
+                </form>                              
+              </tr>                          
+            {% endfor %}                  
+            </tbody>                      
+          </table>  
+        </div>          
       </div>        
     </div>            
   </div>  
