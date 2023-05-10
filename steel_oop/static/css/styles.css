@@ -96,3 +96,22 @@ footer {
 form#subcategory-search-input {
   width: 100%;
 }
+
+@media (max-width: 575px) {
+  .table-responsive table {
+    display: block;
+  }
+  
+  .table-responsive table tr {
+    display: block;
+    margin-bottom: 20px;
+  }
+  
+  .table-responsive table td,
+  .table-responsive table th {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: none;
+  }
+}

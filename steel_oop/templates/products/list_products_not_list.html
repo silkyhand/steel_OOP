@@ -7,14 +7,16 @@
 {% block content %}
   <div class="container" style="padding-top:10rem">
     <div class="row">  
-      <div class="col-md-3 d-none d-lg-block">                
+      <div class="col-md-3 d-none d-lg-block subcategory-list">                
         <ul class="list-group">                     
-          {% for subcategory in subcategories_list %}          
-          <a href="{% url 'products:products_list' subcategory.slug %}" class="list-group-item list-group-item-action active">
-            {{ subcategory.name }}
-          </a>              
+          {% for subcategory in subcategories_list %}  
+            <li class="list-group-item">        
+              <a href="{% url 'products:products_list' subcategory.slug %}">
+                {{ subcategory.name }}
+              </a>        
+            </li>        
           {% endfor %}
-      </ul>  
+        </ul>  
       </div>
       <div class="col-sm-12 col-md-9">
         <h2>{{ subcategory.name }}</h2>                  

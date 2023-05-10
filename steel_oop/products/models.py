@@ -45,6 +45,7 @@ class Subcategory(models.Model):
     class Meta:
         verbose_name = 'Категория товаров'
         verbose_name_plural = 'Категории товаров'
+        ordering = ('name',)
 
 
 class Product(Sortable):
