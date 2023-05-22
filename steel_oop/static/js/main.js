@@ -45,12 +45,13 @@ $(document).ready(function(){
         var weightItem = parseFloat($(this).data('weight'));           
         var quantity = $form.find('.product-number').val();        
         var totalWeight = $form.find('.product-weight').val();       
-        
+        console.log(length)
     
         if ($(this).hasClass('product-number')) {
             timeout = setTimeout(function() {
                 var multiple = Math.ceil(quantity / length)
                 var roundQuantity = multiple * length
+                console.log(length)
                 $form.find('.product-number').val(roundQuantity);
                 totalWeight = Math.ceil(multiple* weightItem);        
                 $form.find('.product-weight').val(totalWeight);
@@ -59,8 +60,7 @@ $(document).ready(function(){
             timeout = setTimeout(function() {
                 quantityItem = Math.ceil(totalWeight / weightItem);
                 quantityMetr = quantityItem * length
-                totalWeight = Math.ceil(quantityItem * weightItem)
-                console.log(totalWeight)
+                totalWeight = Math.ceil(quantityItem * weightItem)               
                 $form.find('.product-number').val(quantityMetr);
                 $form.find('.product-weight').val(totalWeight);
             }, 1800);    
