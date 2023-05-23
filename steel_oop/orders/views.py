@@ -27,7 +27,7 @@ def cart_adding(request):
         defaults={"nmb": nmb}        
     )
     if not created:        
-        new_product.nmb += int(nmb)
+        new_product.nmb += float(nmb)
         new_product.save(force_update=True)
          
     products_in_cart = ProductInCart.objects.filter(session_key=session_key, is_active=True)

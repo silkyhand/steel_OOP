@@ -54,7 +54,7 @@
                   </td>  
                   <td id="weight-item"><input type="number" min="0" 
                       class="product-weight form-control" id="weight" aria-label="product-weight"
-                      data-length="{{ product.length }}" data-weight="{{ product.weight_item|unlocalize }}"
+                      data-length="{{ product.length|unlocalize }}" data-weight="{{ product.weight_item|unlocalize }}"
                       value="" oninput="validity.valid||(value='');">
                       <p class="text-center"><small style="color:blue">Вес ед. {{ product.weight_item|unlocalize }} кг.</small></p>
                   </td>

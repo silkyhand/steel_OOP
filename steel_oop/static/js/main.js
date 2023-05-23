@@ -45,13 +45,13 @@ $(document).ready(function(){
         var weightItem = parseFloat($(this).data('weight'));           
         var quantity = $form.find('.product-number').val();        
         var totalWeight = $form.find('.product-weight').val();       
-        console.log(length)
+       
     
         if ($(this).hasClass('product-number')) {
             timeout = setTimeout(function() {
                 var multiple = Math.ceil(quantity / length)
-                var roundQuantity = multiple * length
-                console.log(length)
+                var roundQuantity = Number((multiple * length).toFixed(1))                
+                console.log(roundQuantity)
                 $form.find('.product-number').val(roundQuantity);
                 totalWeight = Math.ceil(multiple* weightItem);        
                 $form.find('.product-weight').val(totalWeight);
@@ -59,7 +59,9 @@ $(document).ready(function(){
         } else {
             timeout = setTimeout(function() {
                 quantityItem = Math.ceil(totalWeight / weightItem);
-                quantityMetr = quantityItem * length
+                console.log(quantityItem)
+                quantityMetr = Number((quantityItem * length).toFixed(1))
+                console.log(quantityMetr)
                 totalWeight = Math.ceil(quantityItem * weightItem)               
                 $form.find('.product-number').val(quantityMetr);
                 $form.find('.product-weight').val(totalWeight);
@@ -88,7 +90,7 @@ $(document).ready(function(){
         //var totalWeight = $form.find('.product-weight').val();       
         timeout = setTimeout(function(){
             var multiple = Math.ceil(cartProductNmb / lengthCart)
-            var roundQuantity = multiple * lengthCart
+            var roundQuantity = Number((multiple * lengthCart).toFixed(1))
             $productCart.find('.product-number-cart').val(roundQuantity);
             // totalWeight = Math.ceil(multiple* weightItem);        
             // $form.find('.product-weight').val(totalWeight);
