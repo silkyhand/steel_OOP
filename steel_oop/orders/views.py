@@ -1,4 +1,5 @@
 import weasyprint
+from decimal import Decimal
 from django.template.loader import get_template
 from django.core.mail import EmailMessage
 from django.conf import settings
@@ -27,7 +28,7 @@ def cart_adding(request):
         defaults={"nmb": nmb}        
     )
     if not created:        
-        new_product.nmb += int(nmb)
+        new_product.nmb += Decimal(nmb)
         new_product.save(force_update=True)
          
     products_in_cart = ProductInCart.objects.filter(session_key=session_key, is_active=True)

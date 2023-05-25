@@ -95,7 +95,12 @@ class ProductInCart(models.Model):
         verbose_name='Товар в машине',
         on_delete=models.CASCADE,
         related_name='productsincart')
-    nmb = models.IntegerField('Количество', default=1)
+    nmb = models.DecimalField(
+        'Количество',
+        max_digits=9,
+        decimal_places=1,  
+        default=1,
+    )    
     weight_nmb = models.DecimalField(
         'Общий вес товаров в машине',
         max_digits=10,
@@ -126,12 +131,12 @@ class ProductInCart(models.Model):
 
     def save(self, *args, **kwargs):
         price_item = self.product.price_item
-        weight_item = self.product.weight_item
-        length = Decimal(self.product.length)
+        weight_item = float(self.product.weight_item)
+        length = float(self.product.length)
 
         self.price_item = price_item
-        self.total_price = int(self.nmb) * price_item
-        self.weight_nmb = round(int(self.nmb) / length * weight_item)        
+        self.total_price = float(self.nmb) * float(price_item)
+        self.weight_nmb = round(float(self.nmb) / length * weight_item)        
         super(ProductInCart, self).save(*args, **kwargs)
 
 

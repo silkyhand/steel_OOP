@@ -52,7 +52,12 @@ class Product(Sortable):
     size = models.CharField('Размер', max_length=50)
     parameter = models.CharField('Параметры, марка стали', max_length=50, null=True, blank=True)
     thickness = models.CharField('Толщина', max_length=50, null=True, blank=True)
-    length = models.IntegerField('Длина', default=1)
+    length = models.DecimalField(
+        'Длина', 
+        max_digits=4,
+        decimal_places=1,
+        default=1,        
+    )
     weight_item = models.DecimalField(
         'Вес ед, кг.',
         max_digits=10,

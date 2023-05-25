@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load l10n %}
 {% block title %}
     Машина
 {% endblock %}
@@ -34,11 +35,11 @@
                       </td>
                       <td>{{ product.price_item|floatformat:1 }}</td>              
                       <td>
-                        <input type="number" value="{{ product.nmb }}"
-                        min="0" step ="1" class="product-number-cart form-control" 
+                        <input type="number" value="{{ product.nmb|unlocalize }}"
+                        min="0" step ="0.1" class="product-number-cart form-control" 
                         id="quantity-cart" name="nmb_{{ product.id }}" 
                         aria-label="quantity"
-                        data-len="{{ product.product.length }}" oninput="validity.valid||(value='');">
+                        data-len="{{ product.product.length|unlocalize }}" oninput="validity.valid||(value='');">
                       </td>       
                       <td>{{ product.weight_nmb|floatformat:0 }}</td>
                       <td>{{ product.total_price }}</td>              
@@ -49,7 +50,7 @@
             </table> 
           </div>
           <div class="text-end">
-            <button class="btn btn-warning" type="submit" id="cart_update">Обновить товары</button>           
+            <button class="btn btn-warning" type="submit" id="cart_update">Пересчитать</button>           
           </div> 
           <div class="text-end">            
               <b>Сумма заказа</b>
