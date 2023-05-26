@@ -50,8 +50,7 @@ $(document).ready(function(){
         if ($(this).hasClass('product-number')) {
             timeout = setTimeout(function() {
                 var multiple = Math.ceil(quantity / length)
-                var roundQuantity = Number((multiple * length).toFixed(1))                
-                console.log(roundQuantity)
+                var roundQuantity = Number((multiple * length).toFixed(1))
                 $form.find('.product-number').val(roundQuantity);
                 totalWeight = Math.ceil(multiple* weightItem);        
                 $form.find('.product-weight').val(totalWeight);
@@ -59,10 +58,9 @@ $(document).ready(function(){
         } else {
             timeout = setTimeout(function() {
                 quantityItem = Math.ceil(totalWeight / weightItem);
-                console.log(quantityItem)
                 quantityMetr = Number((quantityItem * length).toFixed(1))
-                console.log(quantityMetr)
-                totalWeight = Math.ceil(quantityItem * weightItem)               
+                totalWeight = Math.ceil(quantityItem * weightItem)
+                console.log(totalWeight)
                 $form.find('.product-number').val(quantityMetr);
                 $form.find('.product-weight').val(totalWeight);
             }, 1800);    

@@ -37,7 +37,6 @@
               {% for product in products_list %}            
               <tr class ="product-data" >
                 <td class="text-center block-3">
-                  <a href="{% url 'products:product_detail' product.id %}">
                   {{ product.subcategory.name }}
                   <small class="length-info">{{product.size}}</small>
                   </a>
