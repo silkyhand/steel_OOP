@@ -28,13 +28,13 @@ class Cart(object):
                                      'price_tonn': str(product.price_tonn),
                                      'price_item': str(product.price_item),
                                      'length': str(product.length),
-                                     'coeff': str(product.coeff),                                     
+                                     'coeff': str(product.coeff),
                                      }
         if update_quantity:
             self.cart[product_id]['quantity'] = quantity
         else:
             self.cart[product_id]['quantity'] += quantity
-        print(self.cart[product_id])    
+        print(self.cart[product_id])
         self.save()
 
     def save(self):
@@ -50,7 +50,7 @@ class Cart(object):
         product_id = str(product.id)
         if product_id in self.cart:
             del self.cart[product_id]
-            self.save()   
+            self.save()
 
     def __iter__(self):
         """
@@ -62,7 +62,8 @@ class Cart(object):
         print(list(products.values()))
         for product in products:
             self.cart[str(product.id)]['product'] = product
-            self.cart[str(product.id)]['category'] = product.subcategory.category.slug 
+            self.cart[str(product.id)
+                      ]['category'] = product.subcategory.category.slug
 
         for item in self.cart.values():
             item['price_tonn'] = Decimal(item['price_tonn'])
@@ -72,18 +73,8 @@ class Cart(object):
             if item['unit'] == 't':
                 item['total_price'] = item['price_tonn'] * item['quantity']
             else:
-                # if item['category'] == 'listovoy':            
-                #     item['total_price'] = item['price_item'] * item['quantity']
-                # elif item['category'] != 'listovoy' and (item['quantaty'] % item['length']) != 0:
-                #     raise ValueError('Значение должно быть кратным длине')
-                # else:
-                #     item['total_price'] = item['price_item'] * item['quantity']
-                # while True:
-                #     if (item['quantity'] % item['length']) != 0:
-                #         raise ValueError('Значение должно быть кратным длине') 
-                #     else:   
-                item['total_price'] = item['price_item'] * item['quantity']                
-            yield item        
+                item['total_price'] = item['price_item'] * item['quantity']
+            yield item
 
     def __len__(self):
         """
@@ -96,7 +87,7 @@ class Cart(object):
         Подсчет стоимости товаров в корзине.
         """
         return sum(item['total_price'] for item in self.cart.values())
-    
+
     def clear(self):
         # удаление корзины из сессии
         del self.session[settings.CART_SESSION_ID]

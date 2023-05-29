@@ -1,16 +1,15 @@
-from django.views.generic import ListView
 from django.db.models.functions import Lower
 from django.shortcuts import get_object_or_404, render
 
-from products.models import Category, Product, Subcategory
+from products.models import Subcategory
 
 
 def index(request):
     subcategories = Subcategory.objects.all().order_by(Lower('name'))
     context = {
-        'subcategories': subcategories,       
-    }   
-  
+        'subcategories': subcategories,
+    }
+
     return render(request, 'products/index.html', context)
 
 
@@ -21,23 +20,15 @@ def products_list(request, slug):
     session_key = request.session.session_key
     if not session_key:
         request.session.cycle_key()
-    
+
     context = {
-        'subcategories_list':  subcategories_list,
+        'subcategories_list': subcategories_list,
         'subcategory': subcategory,
         'products_list': products_list,
     }
     if subcategory.category.slug == "listovoy":
         template = 'products/list_products_list.html'
     else:
-        template = 'products/list_products_not_list.html'   
+        template = 'products/list_products_not_list.html'
 
     return render(request, template, context)
-
-
-# def product_detail(request, product_id):
-#    product = get_object_or_404(Product, pk=product_id)
-#    length = product.length                                
-#    cart_product_form = CartAddProductForm(length=length)
-#    return render(request, 'products/product_detail.html', {'product': product,
-#                                                            'cart_product_form': cart_product_form})

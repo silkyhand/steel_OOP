@@ -1,5 +1,5 @@
-from django.contrib import admin
 from adminsortable.admin import SortableAdmin
+from django.contrib import admin
 
 from .models import Category, Product, Productlist, ProductNotlist, Subcategory
 
@@ -16,15 +16,15 @@ class CategoryAdmin(admin.ModelAdmin):
 class SubcategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'slug',)
     search_fields = ('name',)
-    list_filter = ('category',)    
+    list_filter = ('category',)
     prepopulated_fields = {'slug': ('name',)}
 
-       
+
 @admin.register(Product)
 class ProductAdmin(SortableAdmin):
     list_display = ('subcategory', 'size', 'parameter', 'thickness', 'length',
                     'weight_item', 'area', 'price_tonn',
-                    'price_item', 'coeff', 'base_price', 
+                    'price_item', 'coeff', 'base_price',
                     )
     search_fields = ('size',)
     list_filter = (('subcategory', admin.RelatedOnlyFieldListFilter),
@@ -32,28 +32,22 @@ class ProductAdmin(SortableAdmin):
     list_editable = ('base_price',)
 
     fieldsets = (
-      ('Общие данные', {
-          'fields': ('subcategory', 'size', 'parameter', 'thickness', 'length', 'area',
-                     'coeff', 'base_price',
-                    )
-      }),
-      ('Рассчитываемы данные', {
-          'fields': ('weight_item', 'price_tonn', 'price_item')
-      }),
+        ('Общие данные', {
+            'fields': ('subcategory', 'size', 'parameter', 'thickness',
+                       'length', 'area',
+                       'coeff', 'base_price',
+                       )
+        }),
+        ('Рассчитываемы данные', {
+            'fields': ('weight_item', 'price_tonn', 'price_item')
+        }),
     )
-
-    # def price_tonn(self, obj):
-    #     return obj.price_tonn
-    # price_tonn.short_description = 'Цена за тонну'
-
-    # def price_metr(self, obj):
-    #     return obj.price_metr
-    # price_metr.short_description = 'Цена за метр'
 
 
 @admin.register(Productlist)
 class ProductListAdmin(SortableAdmin):
-    list_display = ('subcategory', 'thickness', 'size', 'weight_item', 'area', 'price_tonn',
+    list_display = ('subcategory', 'thickness', 'size', 'weight_item', 'area',
+                    'price_tonn',
                     'price_item', 'coeff', 'base_price',
                     )
     search_fields = ('thickness',)
@@ -65,21 +59,25 @@ class ProductListAdmin(SortableAdmin):
         return Productlist.objects.exclude(thickness__isnull=True)
 
     fieldsets = (
-      ('Общие данные', {
-          'fields': ('subcategory', 'thickness', 'size', 'area',
-                     'coeff', 'base_price',
-                    )
-      }),
-      ('Рассчитываемы данные', {
-          'fields': ('weight_item', 'price_tonn', 'price_item')
-      }),
+        ('Общие данные', {
+            'fields': ('subcategory', 'thickness', 'size', 'area',
+                       'coeff', 'base_price',
+                       )
+        }),
+        ('Рассчитываемы данные', {
+            'fields': ('weight_item', 'price_tonn', 'price_item')
+        }),
     )
 
 
 @admin.register(ProductNotlist)
 class ProductNotListAdmin(SortableAdmin):
-    list_display = ('subcategory', 'size', 'parameter', 'length', 'weight_item', 'price_tonn',
-                    'price_item', 'coeff', 'base_price',
+    list_display = ('subcategory', 'size', 'parameter', 'length',
+                    'weight_item',
+                    'price_tonn',
+                    'price_item',
+                    'coeff',
+                    'base_price',
                     )
     search_fields = ('size',)
     list_filter = (('subcategory', admin.RelatedOnlyFieldListFilter),
@@ -90,30 +88,12 @@ class ProductNotListAdmin(SortableAdmin):
         return Productlist.objects.exclude(thickness__isnull=False)
 
     fieldsets = (
-      ('Общие данные', {
-          'fields': ('subcategory', 'size','parameter','length',    
-                     'coeff', 'base_price',
-                    )
-      }),
-      ('Рассчитываемы данные', {
-          'fields': ('weight_item', 'price_tonn', 'price_item')
-      }),
+        ('Общие данные', {
+            'fields': ('subcategory', 'size', 'parameter', 'length',
+                       'coeff', 'base_price',
+                       )
+        }),
+        ('Рассчитываемы данные', {
+            'fields': ('weight_item', 'price_tonn', 'price_item')
+        }),
     )
-# @admin.register(ProductList)
-# class ProductListAdmin(admin.ModelAdmin):
-#     list_display = ('thickness', 'size', 'area', 'price_tonn',
-#                     'price_item', 'coeff', 'base_price', 'discount',
-#                     )
-#     search_fields = ('thickness',)
-#     list_filter = (('subcategory', admin.RelatedOnlyFieldListFilter),
-#                    )
-#     list_editable = ('base_price', 'discount',)
-
-    # def price_tonn(self, obj):
-    #     return obj.price_tonn
-
-    # def price_item(self, obj):
-    #     return obj.price_item
-
-    # price_tonn.short_description = 'Цена за тонну'
-    # price_item.short_description = 'Цена за штуку'

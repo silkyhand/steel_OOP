@@ -1,55 +1,58 @@
-import weasyprint
 from decimal import Decimal
-from django.template.loader import get_template
-from django.core.mail import EmailMessage
+
+import weasyprint
 from django.conf import settings
-from django.http import HttpResponse
-from django.template import Context
-from django.http import JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.mail import EmailMessage
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.template import Context
+from django.template.loader import get_template
 from django.views.decorators.http import require_POST
 from products.models import Product
+
 from .forms import OrderCreateForm
 from .models import Order, ProductInCart, ProductInOrder
 
 
 def cart_adding(request):
     return_dict = dict()
-    session_key = request.session.session_key   
-    data = request.POST    
+    session_key = request.session.session_key
+    data = request.POST
     product_id = data.get("product_id")
-    nmb = data.get("nmb")    
-   
+    nmb = data.get("nmb")
+
     new_product, created = ProductInCart.objects.get_or_create(
         session_key=session_key,
         product_id=product_id,
-        defaults={"nmb": nmb}        
+        defaults={"nmb": nmb}
     )
-    if not created:        
+    if not created:
         new_product.nmb += Decimal(nmb)
         new_product.save(force_update=True)
-         
-    products_in_cart = ProductInCart.objects.filter(session_key=session_key, is_active=True)
+
+    products_in_cart = ProductInCart.objects.filter(
+        session_key=session_key, is_active=True)
     products_total_nmb = products_in_cart.count()
     return_dict["products_total_nmb"] = products_total_nmb
-    return_dict["products"] = list()    
+    return_dict["products"] = list()
 
     return JsonResponse(return_dict)
 
 
 def cart_order(request):
     session_key = request.session.session_key
-    products_in_cart = ProductInCart.objects.filter(session_key=session_key, is_active=True)
+    products_in_cart = ProductInCart.objects.filter(
+        session_key=session_key, is_active=True)
     total_cart_price = 0
     for item in products_in_cart:
-        total_cart_price += item.total_price        
+        total_cart_price += item.total_price
     template = "cart/cart_order.html"
     context = {
         "total_cart_price": total_cart_price,
-        "products_in_cart": products_in_cart,               
-    }   
+        "products_in_cart": products_in_cart,
+    }
     return render(request, template, context)
 
 
@@ -58,7 +61,8 @@ def cart_update(request):
     if not session_key:
         request.session.cycle_key()
         session_key = request.session.session_key
-    products_in_cart = ProductInCart.objects.filter(session_key=session_key, is_active=True)
+    products_in_cart = ProductInCart.objects.filter(
+        session_key=session_key, is_active=True)
     # if not cart:
     #     cart = Cart.objects.create(session_key=session_key)
 
@@ -76,7 +80,10 @@ def cart_remove(request, product_id):
         request.session.cycle_key()
         session_key = request.session.session_key
 
-    product = get_object_or_404(ProductInCart, session_key=session_key, id=product_id)
+    product = get_object_or_404(
+        ProductInCart,
+        session_key=session_key,
+        id=product_id)
     product.delete()
 
     messages.success(request, 'Item removed from cart.')
@@ -90,56 +97,58 @@ def order_create(request):
         if form.is_valid():
             order = form.save(commit=False)
             if request.user.is_authenticated:
-                order.user = request.user                           
-            order.save()    
-            products_in_cart = ProductInCart.objects.filter(session_key=session_key, is_active=True)            
+                order.user = request.user
+            order.save()
+            products_in_cart = ProductInCart.objects.filter(
+                session_key=session_key, is_active=True)
             total_price = 0
             total_weight = 0
             if products_in_cart.exists():
                 for item in products_in_cart:
                     ProductInOrder.objects.create(
-                        product=item.product, 
+                        product=item.product,
                         nmb=item.nmb,
                         price_item=item.price_item,
                         total_price=item.total_price,
                         weight_nmb=item.weight_nmb,
                         order=order)
-                    total_price += item.total_price  
-                    total_weight += item.weight_nmb                
+                    total_price += item.total_price
+                    total_weight += item.weight_nmb
                     item.delete()
                 order.total_price = total_price
-                order.total_weight = total_weight            
-                order.save() 
-                order_pdf_email(request, order.id)    
-                messages.success(request, 'Заказ успешно создан.')            
+                order.total_weight = total_weight
+                order.save()
+                order_pdf_email(request, order.id)
+                messages.success(request, 'Заказ успешно создан.')
                 return redirect('orders:order_detail', order_id=order.id)
             else:
-                return HttpResponse("В машине нет товаров")        
+                return HttpResponse("В машине нет товаров")
     else:
         form = OrderCreateForm(request=request)
         total_price = 0
         total_weight = 0
-        products_in_cart = ProductInCart.objects.filter(session_key=session_key, is_active=True)
+        products_in_cart = ProductInCart.objects.filter(
+            session_key=session_key, is_active=True)
         for item in products_in_cart:
-            total_price += item.total_price  
+            total_price += item.total_price
             total_weight += item.weight_nmb
         context = {
             'form': form,
-            'products_in_cart': products_in_cart,  
-            'total_price': total_price, 
+            'products_in_cart': products_in_cart,
+            'total_price': total_price,
             'total_weight': total_weight,
-        }   
+        }
 
     return render(request, 'orders/order_create.html', context)
 
 
 def order_detail(request, order_id):
-    order = get_object_or_404(Order, pk=order_id) 
-    products_in_order = order.products.all()  
-    context = { 
+    order = get_object_or_404(Order, pk=order_id)
+    products_in_order = order.products.all()
+    context = {
         "order": order,
-        "products_in_order": products_in_order, 
-    }     
+        "products_in_order": products_in_order,
+    }
     return render(request, 'orders/order_detail.html', context)
 
 
@@ -184,11 +193,9 @@ def render_to_pdf(template_path, context):
 
     # Create the PDF file object
     pdf_file = weasyprint.HTML(string=html).write_pdf()
-    
+
     return pdf_file
 
-
-        
 
 #     # form = CheckoutContactForm(request.POST or None)
 #     # if request.POST:
@@ -223,7 +230,6 @@ def render_to_pdf(template_path, context):
 #     # return render(request, 'orders/checkout.html', locals())
 
 
-
 # # @require_POST
 # # def cart_add(request, product_id):
 # #     cart = Cart(request)
@@ -234,7 +240,7 @@ def render_to_pdf(template_path, context):
 # #         cd = form.cleaned_data
 # #         cart.add(product=product,
 # #                  quantity=cd['quantity'],
-# #                  update_quantity=cd['update'],                 
+# #                  update_quantity=cd['update'],
 # #                  unit=cd['unit'],
 # #                 )
 # #     return redirect('orders:cart_detail')

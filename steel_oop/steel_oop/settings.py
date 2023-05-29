@@ -35,8 +35,8 @@ ALLOWED_HOSTS = [
     'www.misologos.pythonanywhere.com',
     'misologos.pythonanywhere.com',
     '51.250.106.163',
-    'steelconstructor.ddns.net', 
-] 
+    'steelconstructor.ddns.net',
+]
 # Application definition
 
 INSTALLED_APPS = [
@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'core.apps.CoreConfig',
     'orders.apps.OrdersConfig',
-    'adminsortable',   
+    'adminsortable',
 ]
 
 MIDDLEWARE = [
@@ -103,7 +103,7 @@ DATABASES = {
         'HOST': os.getenv('DB_HOST'),
         'PORT': os.getenv('DB_PORT')
     }
-} 
+}
 
 
 # Passsword validation
@@ -111,16 +111,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',  # noqa
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',  # noqa
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',  # noqa
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',  # noqa
     },
 ]
 
@@ -144,7 +144,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-#STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 
 AUTH_USER_MODEL = 'users.User'
@@ -160,7 +160,7 @@ EMAIL_HOST_PASSWORD = 'dkkrusxbnygbgckn'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
 EMAIL_ADMIN = EMAIL_HOST_USER
-# EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails') 
+# EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
 
 LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'products:index'
@@ -168,6 +168,4 @@ LOGOUT_REDIRECT_URL = 'products:index'
 CART_SESSION_ID = 'cart'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE = 1800 
-
-
+SESSION_COOKIE_AGE = 1800

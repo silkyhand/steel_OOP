@@ -1,8 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 
-from .forms import CreationForm, ChangeForm
-
+from .forms import ChangeForm, CreationForm
 
 User = get_user_model()
 
@@ -11,7 +10,13 @@ class UserAdmin(admin.ModelAdmin):
     add_form = CreationForm
     form = ChangeForm
     model = User
-    list_display = ('email', 'username', 'user_discount', 'is_staff', 'is_active',)
+    list_display = (
+        'email',
+        'username',
+        'user_discount',
+        'is_staff',
+        'is_active',
+    )
     list_filter = ('is_staff', 'is_active',)
     list_editable = ('user_discount',)
     fieldsets = (
@@ -21,7 +26,8 @@ class UserAdmin(admin.ModelAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2', 'is_staff', 'is_active')}),
+            'fields': ('email', 'password1', 'password2',
+                       'is_staff', 'is_active')}),
     )
     search_fields = ('email',)
     ordering = ('email',)
