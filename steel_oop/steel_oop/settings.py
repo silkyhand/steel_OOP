@@ -36,6 +36,7 @@ ALLOWED_HOSTS = [
     'misologos.pythonanywhere.com',
     '51.250.106.163',
     'steelconstructor.ddns.net',
+    'web:8000',
 ]
 # Application definition
 

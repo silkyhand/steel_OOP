@@ -10,7 +10,7 @@ RUN apt-get update
 
 RUN apt install python3-pip libpango-1.0-0 libpangoft2-1.0-0 libjpeg-dev libopenjp2-7-dev libffi-dev -y
 
-COPY steel_oop/ /app
+COPY . /app
 
 WORKDIR /app
 
